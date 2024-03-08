@@ -14,11 +14,11 @@ const Template = ({title,desc1,desc2,formtype,setIsLoggedIn}) => {
         <h1
         className='text-gray-300 font-semibold text-[1.875rem] leading-[2.375rem]'
         >{title}</h1>
-        <p className='text=[1.125rem] leading[1.625rem] mt-4'>
+        {/* <p className='text=[1.125rem] leading[1.625rem] mt-4'>
             <span className='text-gray-300'>{desc1}</span>
             <br/>
                 <span className='text-blue-600 italic'>{desc2}</span>
-        </p>
+        </p> */}
 
       {formtype === "signup" ? 
       (<SignupForm  setIsLoggedIn={setIsLoggedIn}/>):
