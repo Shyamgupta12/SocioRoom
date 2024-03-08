@@ -29,34 +29,34 @@ const userSchema = new mongoose.Schema(
             required: true,
             minLenth: 8,
         },
-        gender: {
-            type: String,
-            required: true,
-        },
-        profession: {
-            type: String,
-            required: true,
-        },
-        age: {
-            type: Number,
-            required: true,
-        },
-        verified: {
-            type:Boolean,
-            default:false
-        },
-        friends: [
-            {
-                type: String,
-                required: true,
-            }
-        ],
-        hobbies: [
-            {
-                type: String,
-                required: true,
-            }
-        ],
+        // gender: {
+        //     type: String,
+        //     required: true,
+        // },
+        // profession: {
+        //     type: String,
+        //     required: true,
+        // },
+        // age: {
+        //     type: Number,
+        //     required: true,
+        // },
+        // verified: {
+        //     type:Boolean,
+        //     default:false
+        // },
+        // friends: [
+        //     {
+        //         type: String,
+        //         required: true,
+        //     }
+        // ],
+        // hobbies: [
+        //     {
+        //         type: String,
+        //         required: true,
+        //     }
+        // ],
         createdAt: {
             type: Date,
             required: true,

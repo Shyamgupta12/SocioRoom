@@ -13,7 +13,7 @@ exports.usersignup = async(req, res) => {
         const {firstname, lastname, username, email, password, confirmpassword, gender, profession, age, verified, hobbies, friends} = req.body;
         console.log(req.body); 
         
-        if(!firstname || !lastname || !username || !email || !password || !confirmpassword || !gender || !profession || !age || !verified || !hobbies || !friends) {
+        if(!firstname || !lastname || !username || !email || !password || !confirmpassword /*|| !gender || !profession || !age || !verified || !hobbies || !friends*/) {
             return res.status(403).json({
                 success:false,
                 message:"All fields are required.",
@@ -54,12 +54,12 @@ exports.usersignup = async(req, res) => {
             username, 
             email, 
             password:hashedPassword,
-            gender,
-            profession,
-            age,
-            verified,
-            hobbies,
-            friends,
+            // gender,
+            // profession,
+            // age,
+            // verified,
+            // hobbies,
+            // friends,
         });
 
         await User.save();
@@ -86,7 +86,11 @@ exports.usersignup = async(req, res) => {
 
 const createtoken = async() => {
     const token = await jwt.sign({_id:"65eb43fc119f892c84de2235"},"mynameisanmolsahuandiamfromjhansi");
+    expiresIn:"2 minutes",
     console.log(token);
+
+    const userVer = await jwt.verify(token, "mynameisanmolsahuandiamfromjhansi");
+    console.log(userVer);
 }
 
 createtoken();
