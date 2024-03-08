@@ -13,7 +13,7 @@ exports.usersignup = async(req, res) => {
         const {firstname, lastname, username, email, password, confirmpassword, gender, profession, age, verified, hobbies, friends} = req.body;
         console.log(req.body); 
         
-        if(!firstname || !lastname || !username || !email || !password || !confirmpassword || !gender || !profession || !age || !verified || !hobbies || !friends) {
+        if(!firstname || !lastname || !username || !email || !password || !confirmpassword ) {
             return res.status(403).json({
                 success:false,
                 message:"All fields are required.",
@@ -54,12 +54,7 @@ exports.usersignup = async(req, res) => {
             username, 
             email, 
             password:hashedPassword,
-            gender,
-            profession,
-            age,
-            verified,
-            hobbies,
-            friends,
+           
         });
 
         await User.save();
@@ -89,7 +84,7 @@ const createtoken = async() => {
     console.log(token);
 }
 
-createtoken();
+// createtoken();
 
 // user login route
 exports.userlogin = async(req, res) => {

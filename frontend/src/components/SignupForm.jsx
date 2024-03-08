@@ -16,6 +16,11 @@ const SignupForm = ({setIsLoggedIn}) => {
    email:"",
    password:"",
    confirmPassword:"",
+//    gender,
+//    profession,
+//    age,
+//    hobbies,
+//    friends
  })
 
  const[showPassword , setShowPassword] = useState(false);
@@ -36,51 +41,51 @@ const SignupForm = ({setIsLoggedIn}) => {
 
 }
 
-function submitHandler(event){
-   event.preventDefault();
-   if(formData.password !== formData.confirmPassword){
-    toast.error('Passwords do not match');
-    return;
-   }
-   setIsLoggedIn(true);
-   toast.success("Account Created");
-   const accountData = {
-    ...formData
-   };
+// function submitHandler(event){
+//    event.preventDefault();
+//    if(formData.password !== formData.confirmPassword){
+//     toast.error('Passwords do not match');
+//     return;
+//    }
+//    setIsLoggedIn(true);
+//    toast.success("Account Created");
+//    const accountData = {
+//     ...formData
+//    };
 
-   const finalData = {
-    ...accountData,
+//    const finalData = {
+//     ...accountData,
      
-   }
+//    }
 
-   console.log("Printing Final account Data");
-   console.log(finalData);
+//    console.log("Printing Final account Data");
+//    console.log(finalData);
 
-  //  NAVIGATE TO DASHBOARD 
-  navigate("/"); 
-}
+//   //  NAVIGATE TO DASHBOARD 
+//   navigate("/"); 
+// }
 
-// function submitHandler(event) {
-//     event.preventDefault();
-//     if (formData.password !== formData.confirmPassword) {
-//       toast.error('Passwords do not match');
-//       return;
-//     }
+function submitHandler(event) {
+    event.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
   
-//     const accountData = { ...formData };
+    const accountData = { ...formData };
   
-//     axios.post('http://your-backend-url.com/signup', accountData)
-//       .then(response => {
-//         console.log('Signup successful:', response.data);
-//         setIsLoggedIn(true);
-//         toast.success('Account Created');
-//         navigate('/');
-//       })
-//       .catch(error => {
-//         console.error('Error signing up:', error);
-//         toast.error('Error signing up. Please try again later.');
-//       });
-//   }
+    axios.post('http://your-backend-url.com/signup', accountData)
+      .then(response => {
+        console.log('Signup successful:', response.data);
+        setIsLoggedIn(true);
+        toast.success('Account Created');
+        navigate('/');
+      })
+      .catch(error => {
+        console.error('Error signing up:', error);
+        toast.error('Error signing up. Please try again later.');
+      });
+  }
   
 
 
