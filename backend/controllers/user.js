@@ -10,10 +10,10 @@ const app = express();
 
 exports.usersignup = async(req, res) => {
     try {
-        const {firstname, lastname, username, email, password, confirmpassword, gender, profession, age, verified, hobbies, friends} = req.body;
+        const {firstname, lastname, username, email, password, confirmpassword, gender, profession, age, verified, hobbies} = req.body;
         console.log(req.body); 
         
-        if(!firstname || !lastname || !username || !email || !password || !confirmpassword /*|| !gender || !profession || !age || !verified || !hobbies || !friends*/) {
+        if(!firstname || !lastname || !username || !email || !password || !confirmpassword || !gender || !profession || !age || !verified || !hobbies) {
             return res.status(403).json({
                 success:false,
                 message:"All fields are required.",
@@ -54,12 +54,11 @@ exports.usersignup = async(req, res) => {
             username, 
             email, 
             password:hashedPassword,
-            // gender,
-            // profession,
-            // age,
-            // verified,
-            // hobbies,
-            // friends,
+            gender,
+            profession,
+            age,
+            verified,
+            hobbies,
         });
 
         await User.save();
@@ -93,7 +92,7 @@ const createtoken = async() => {
     console.log(userVer);
 }
 
-createtoken();
+// createtoken();
 
 // user login route
 exports.userlogin = async(req, res) => {
