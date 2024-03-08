@@ -13,14 +13,15 @@ const SignupForm = ({setIsLoggedIn}) => {
  const [formData,setFormData] = useState({
    firstName:"",
    lastName:"",
+   username:"",
    email:"",
    password:"",
    confirmPassword:"",
-//    gender,
-//    profession,
-//    age,
-//    hobbies,
-//    friends
+   gender:"",
+   profession:"",
+   age:"",
+   
+  
  })
 
  const[showPassword , setShowPassword] = useState(false);
@@ -41,51 +42,51 @@ const SignupForm = ({setIsLoggedIn}) => {
 
 }
 
-// function submitHandler(event){
-//    event.preventDefault();
-//    if(formData.password !== formData.confirmPassword){
-//     toast.error('Passwords do not match');
-//     return;
-//    }
-//    setIsLoggedIn(true);
-//    toast.success("Account Created");
-//    const accountData = {
-//     ...formData
-//    };
+function submitHandler(event){
+   event.preventDefault();
+   if(formData.password !== formData.confirmPassword){
+    toast.error('Passwords do not match');
+    return;
+   }
+   setIsLoggedIn(true);
+   toast.success("Account Created");
+   const accountData = {
+    ...formData
+   };
 
-//    const finalData = {
-//     ...accountData,
+   const finalData = {
+    ...accountData,
      
-//    }
+   }
 
-//    console.log("Printing Final account Data");
-//    console.log(finalData);
+   console.log("Printing Final account Data");
+   console.log(finalData);
 
-//   //  NAVIGATE TO DASHBOARD 
-//   navigate("/"); 
-// }
+  //  NAVIGATE TO DASHBOARD 
+  navigate("/"); 
+}
 
-function submitHandler(event) {
-    event.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      toast.error('Passwords do not match');
-      return;
-    }
+// function submitHandler(event) {
+//     event.preventDefault();
+//     if (formData.password !== formData.confirmPassword) {
+//       toast.error('Passwords do not match');
+//       return;
+//     }
   
-    const accountData = { ...formData };
+//     const accountData = { ...formData };
   
-    axios.post('http://your-backend-url.com/signup', accountData)
-      .then(response => {
-        console.log('Signup successful:', response.data);
-        setIsLoggedIn(true);
-        toast.success('Account Created');
-        navigate('/');
-      })
-      .catch(error => {
-        console.error('Error signing up:', error);
-        toast.error('Error signing up. Please try again later.');
-      });
-  }
+//     axios.post('http://your-backend-url.com/signup', accountData)
+//       .then(response => {
+//         console.log('Signup successful:', response.data);
+//         setIsLoggedIn(true);
+//         toast.success('Account Created');
+//         navigate('/');
+//       })
+//       .catch(error => {
+//         console.error('Error signing up:', error);
+//         toast.error('Error signing up. Please try again later.');
+//       });
+//   }
   
 
 
@@ -133,6 +134,24 @@ function submitHandler(event) {
           </label>
 
        </div>
+
+       {/* username */}
+         
+       <label className='w-full mt-auto'>
+            <p className='text-[0.875rem] text-gray-300 mb-1 mt-2 leading-[1.375rem]'>
+              UserName<sup className='text-pink-500'>*</sup></p>
+           < input
+              required
+              type="text"
+              name="username"
+              onChange={changeHandler}
+              placeholder='Enter UserName'
+              value={formData.username}
+              className='bg-gray-800 rounded-[0.5rem] text-gray-300 w-full h-8 p-[12px]'
+           />
+          </label>
+
+
 
          {/* email address */}
        <label className='w-full mt-auto'>
@@ -194,6 +213,9 @@ function submitHandler(event) {
               className='bg-gray-800 rounded-[0.5rem] text-gray-300 w-full h-8 p-[12px]' 
            />
 
+         
+
+
                 {/* onclick se prev ki value opposite ho jayengi agar true h to false or false h to true */}
        <span 
        className='absolute right-3 top-[30px] cursor-pointer'
@@ -208,7 +230,60 @@ function submitHandler(event) {
 
           </label> 
 
+          
+
         </div>
+
+          {/* Gender and proffession */}
+          <div className='flex  gap-x-4 mt-2'>
+              {/* Gender */}
+           
+          <label className='w-full mt-auto'>
+            <p className='text-[0.875rem] text-gray-300 mb-1 mt-2 leading-[1.375rem]'>
+             Gender<sup className='text-pink-500'>*</sup></p>
+           < input
+              required
+              type="text"
+              name="gender"
+              onChange={changeHandler}
+              placeholder='Enter gender'
+              value={formData.gender}
+              className='bg-gray-800 rounded-[0.5rem] text-gray-300 w-full h-8 p-[12px]'
+           />
+          </label>
+
+          {/* Proffession */}
+        
+          <label className='w-full mt-auto'>
+            <p className='text-[0.875rem] text-gray-300 mb-1 mt-2 leading-[1.375rem]'>
+             Proffesion<sup className='text-pink-500'>*</sup></p>
+           < input
+              required
+              type="text"
+              name="profession"
+              onChange={changeHandler}
+              placeholder='Enter Your Proffession'
+              value={formData.profession}
+              className='bg-gray-800 rounded-[0.5rem] text-gray-300 w-full h-8 p-[12px]'
+           />
+          </label>
+        </div>
+
+              {/* Age */}
+
+              <label className='w-full mt-auto'>
+            <p className='text-[0.875rem] text-gray-300 mb-1 mt-2 leading-[1.375rem]'>
+              Age<sup className='text-pink-500'>*</sup></p>
+           < input
+              required
+              type="number"
+              name="age"
+              onChange={changeHandler}
+              placeholder='Enter Your Age'
+              value={formData.age}
+              className='bg-gray-800 rounded-[0.5rem] text-gray-300 w-full h-8 p-[12px]'
+           />
+          </label>
 
         <button className='w-full bg-yellow-400 rounded-[8px] font-medium text-gray-900 px-[8px] py-[5px] mt-4'>
             Create Account
