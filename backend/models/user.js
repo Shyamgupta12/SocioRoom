@@ -6,23 +6,27 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
             maxLenth: 50,
+            trim:true
         },
         lastname: {
             type: String,
             required: true,
             maxLenth: 50,
+            trim:true
         },
         username: {
             type: String,
             required: true,
             maxLenth: 50,
             unique: true,
+            trim:true
         },
         email: {
             type: String,
             required: true,
             maxLenth: 50,
             unique: true,
+            trim:true
         },
         password: {
             type: String,
@@ -55,9 +59,17 @@ const userSchema = new mongoose.Schema(
                 type: String,
             }
         ],
+        image : {
+            type:String,
+        },
+        token : {
+            type:String,
+        },
+        resetPasswordExpires: {
+            type : Date,
+        },
         createdAt: {
             type: Date,
-            required: true,
             default: Date.now(),
         },
     }
