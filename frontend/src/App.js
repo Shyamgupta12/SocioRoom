@@ -7,6 +7,7 @@ import Search from './components/Search'
 import { useState, useEffect } from 'react';
 import PrivateRoute from './components/PrivateRoute';
 import Chat from './messages/Chat';
+import LoggedHome from './components/LoggedHome';
 
 
 export default function App() {
@@ -69,8 +70,14 @@ export default function App() {
             path="/messages"  
             element={<Chat setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
+            <Route
+            path="/home"  
+            element={<LoggedHome setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
+          />
+
         </Routes>
       </div>
+    
     </Router>
   );
 }

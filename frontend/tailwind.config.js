@@ -1,15 +1,32 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       colors: {
         customColor: 'rgb(0, 8, 20)',
+        gray: {
+          200: "#D5DAE1"
+        },
+        black: {
+          DEFAULT: "#000",
+          500: "#1D2235"
+        },
+        blue: {
+          500: "#2b77e7"
+        }
       },
+      fontFamily: {
+        worksans: ["Work Sans", "sans-serif"],
+        poppins: ['Poppins', "sans-serif"]
+      },
+      boxShadow: {
+        card: '0px 1px 2px 0px rgba(0, 0, 0, 0.05)'
+      }
     },
   },
   plugins: [],
 }
-

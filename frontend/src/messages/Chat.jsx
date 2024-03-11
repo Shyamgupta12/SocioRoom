@@ -1,5 +1,5 @@
 import React from 'react';
-import Avatar from '../assests/avatar.jpg';
+import Avatar from '../assets/images/shopify.png'
 import { MdAddIcCall } from 'react-icons/md';
 import { IoSendSharp } from "react-icons/io5";
 import { BiPlusCircle } from "react-icons/bi";
