@@ -45,20 +45,33 @@ const userSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
+        dob: {
+            type: String,
+        },
+        about: {
+            type: String,
+            maxLength: 50
+        },
+        city: {
+            type : String,
+            maxLength: 20
+        },
         verified: {
             type:Boolean,
             default:false
         },
-        friends: [
-            {
-                type: String,
-            }
-        ],
-        hobbies: [
-            {
-                type: String,
-            }
-        ],
+        followers: {
+            type: Array,
+            default: [],
+          },
+          followings: {
+            type: Array,
+            default: [],
+          },
+          hobbies: {
+            type: Array,
+            default: [],
+          },
         image : {
             type:String,
         },
@@ -68,11 +81,8 @@ const userSchema = new mongoose.Schema(
         resetPasswordExpires: {
             type : Date,
         },
-        createdAt: {
-            type: Date,
-            default: Date.now(),
-        },
-    }
-)
+    },
+    { timestamps: true }
+);
 
 module.exports = mongoose.model("User", userSchema);

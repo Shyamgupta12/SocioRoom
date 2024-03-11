@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const mailSender = require("../utils/mailSender");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 //resetpassword token
 exports.resetPasswordToken = async (req, res) => {
@@ -47,11 +48,11 @@ exports.resetPassword = async (req, res) => {
         const { password, confirmPassword, token } = req.body;
 
         if (password !== confirmPassword) {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: "Password Not Matching."
             });
-        }
+        }       
 
         const userDetails = await User.findOne({ token: token });
 
@@ -75,14 +76,14 @@ exports.resetPassword = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "Password reset Successfullly."
+            message: "Password reset Successfully."
         })
     }
     catch (e) {
         console.log(e);
         return res.status(500).json({
             success: false,
-            message: "Some went wrong while sending resetting the password."
+            message: "Some went wrong while resetting the password."
         })
     }
 }

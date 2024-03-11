@@ -12,7 +12,7 @@ export default function App() {
   console.log(user)
 
   useEffect(()=>{
-    const check=async()=>{
+    const check=async() => {
       try{
         const loggedInUser = localStorage.getItem("user");
         if (loggedInUser) {

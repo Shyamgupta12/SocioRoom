@@ -1,99 +1,90 @@
-import React from 'react'
-import { useState} from 'react'
-import { AiOutlineEye , AiOutlineEyeInvisible} from "react-icons/ai"
-import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { toast } from 'react-toastify';
+import { useNavigate , useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-
-const SignupForm = ({setIsLoggedIn}) => {
-
+const SignupForm = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
 
- const [formData,setFormData] = useState({
-   firstName:"",
-   lastName:"",
-   username:"",
-   email:"",
-   password:"",
-   confirmPassword:"",
-   gender:"",
-   profession:"",
-   age:"",
-   
-  
- })
+  const [formData, setFormData] = useState({
+    firstname: '',
+    lastname: '',
+    username: '',
+    email: '',
+    password: '',
+    confirmpassword: '',
+    gender: '',
+    profession: '',
+    age: '',
+  });
 
- const[showPassword , setShowPassword] = useState(false);
- const[showConfirmPassword , setshowConfirmPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setshowConfirmPassword] = useState(false);
 
-
- function changeHandler(event){
-
-  setFormData((prevData)  =>(
-      {
-          ...prevData,
-          [event.target.name]:event.target.value
-
-
-      }
-
-  ));
-
-}
-
-// function submitHandler(event){
-//    event.preventDefault();
-//    if(formData.password !== formData.confirmPassword){
-//     toast.error('Passwords do not match');
-//     return;
-//    }
-//    setIsLoggedIn(true);
-//    toast.success("Account Created");
-//    const accountData = {
-//     ...formData
-//    };
-
-//    const finalData = {
-//     ...accountData,
-     
-//    }
-
-//    console.log("Printing Final account Data");
-//    console.log(finalData);
-
-//   //  NAVIGATE TO DASHBOARD 
-//   navigate("/"); 
-// }
-
-function submitHandler(event) {
-    event.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      toast.error('Passwords do not match');
-      return;
-    }
-  
-    const accountData = { ...formData };
-    axios.post("http://localhost:3000/api/v1/usersignup", accountData)
-      .then(response => {
-        console.log('Signup successful:', response.data);
-        setIsLoggedIn(true);
-        toast.success('Account Created');
-        navigate('/');
-      })
-      .catch(error => {
-        console.error('Error signing up:', error);
-        toast.error('Error signing up. Please try again later.');
-      });
+  function changeHandler(event) {
+    setFormData((prevData) => ({
+      ...prevData,
+      [event.target.name]: event.target.value,
+    }));
   }
   
-
+    const accountData = { ...formData };
+  
+    const PostData = async (e) => {
+      e.preventDefault();
+      const {
+        firstname,
+        lastname,
+        username,
+        email,
+        password,
+        confirmpassword,
+        gender,
+        profession,
+        age
+      } = accountData;
+    
+      try {
+        const res = await fetch("/api/v1/usersignup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            firstname,
+            lastname,
+            username,
+            email,
+            password,
+            confirmpassword,
+            gender,
+            profession,
+            age
+          })
+        });
+    
+        if (res.ok) {
+          window.alert("Registration Successfully.");
+          console.log("Registration Successfully.");
+        } else {
+          const data = await res.json();
+          window.alert("Invalid Registration: " + data.message);
+          console.log("Invalid Registration: ", data.message);
+        }
+      } catch (error) {
+        console.error("Error during registration:", error);
+        window.alert("Error during registration. Please try again.");
+      }
+    };
+    
+    
 
   return (
     <div >
          {/* student-Instructor tab */}
 
-       <form onSubmit={submitHandler}> 
+       <form method='POST'> 
 
          {/* first name and lastname */}
        <div className='flex  gap-x-4 mt-2'>
@@ -280,7 +271,7 @@ function submitHandler(event) {
            />
           </label>
 
-        <button className='w-full bg-yellow-400 rounded-[8px] font-medium text-gray-900 px-[8px] py-[5px] mt-4'>
+        <button onClick={PostData} className='w-full bg-yellow-400 rounded-[8px] font-medium text-gray-900 px-[8px] py-[5px] mt-4'>
             Create Account
         </button>
 

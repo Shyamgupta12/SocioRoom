@@ -66,12 +66,13 @@ exports.usersignup = async(req, res) => {
         const {firstname, lastname, username, email, password, confirmpassword, gender, profession, age, verified, hobbies, otp} = req.body;
         console.log(req.body); 
         
-        if(!firstname || !lastname || !username || !email || !password || !confirmpassword || !gender || !profession || !age || !verified || !hobbies) {
+        if (!firstname || !lastname || !username || !email || !password || !confirmpassword || !gender || !profession || !age) {
             return res.status(403).json({
-                success:false,
-                message:"All fields are required.",
-            })
+                success: false,
+                message: "All fields are required.",
+            });
         }
+        
 
         // password match or not
         if (password !== confirmpassword) {
@@ -141,12 +142,12 @@ exports.usersignup = async(req, res) => {
         
         await newUser.save();
         
-        console.log(User);
+        console.log(newUser);
 
         // send a json response and success flag
         res.status(201).json({
             success:true,
-            data:User,
+            data:newUser,
             message: "User Registered Successfully."
         });
     }
@@ -239,52 +240,52 @@ exports.userlogin = async(req, res) => {
     }
 }
 
-exports.changePassword = async (req, res) => {
-    try{
-        const {username, oldpassword, newpassword, confirmpassword} = req.body;
-        const loginuser = await user.findOne({username:username}).populate().exec();
+// exports.changePassword = async (req, res) => {
+//     try{
+//         const {username, oldpassword, newpassword, confirmpassword} = req.body;
+//         const loginuser = await User.findOne({username:username}).populate().exec();
         
-        let oldhashedPswd;
-        oldhashedPswd = await bcrypt.hash(oldpassword, 10);
+//         let oldhashedPswd;
+//         oldhashedPswd = await bcrypt.hash(oldpassword, 10);
 
-        if(loginuser.password !== oldhashedPswd) {
-            return res.status(401).json({
-                success:false,
-                message:"Old Password is wrong. Please try again.",
-            })
-        }
+//         if(loginuser.password !== oldhashedPswd) {
+//             return res.status(401).json({
+//                 success:false,
+//                 message:"Old Password is wrong. Please try again.",
+//             })
+//         }
 
-        if(newpassword !== confirmpassword){
-            return res.status(401).json({
-                success:false,
-                message:"New password and confirm password are not same."
-            })
-        }
+//         if(newpassword !== confirmpassword){
+//             return res.status(401).json({
+//                 success:false,
+//                 message:"New password and confirm password are not same."
+//             })
+//         }
 
-        // Hashing of Password
-        let hashedPswd;
+//         // Hashing of Password
+//         let hashedPswd;
 
-        try {
-            hashedPswd = await bcrypt.hash(newpassword, 10);
-        }
-        catch(err) {
-            return res.status(500).json(
-                {
-                    success: false,
-                    message: "Error in Hashing Password",
-                }
-            )
-        }
+//         try {
+//             hashedPswd = await bcrypt.hash(newpassword, 10);
+//         }
+//         catch(err) {
+//             return res.status(500).json(
+//                 {
+//                     success: false,
+//                     message: "Error in Hashing Password",
+//                 }
+//             )
+//         }
     
-        await user.updateOne({username:username},{password:hashedPswd});
-        changePasswordemail(loginuser.email);
+//         await User.updateOne({username:username},{password:hashedPswd});
+//         changePasswordemail(loginuser.email);
 
-        } catch(err){
-            console.error(err);
-            console.log(err);
-            res.status(500).json({
-                success: false,
-                message: "Password cannot be changed.",
-            })
-        }
-}
+//         } catch(err){
+//             console.error(err);
+//             console.log(err);
+//             res.status(500).json({
+//                 success: false,
+//                 message: "Password cannot be changed.",
+//             })
+//         }
+// }
