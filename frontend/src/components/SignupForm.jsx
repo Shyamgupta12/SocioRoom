@@ -2,7 +2,7 @@ import React from 'react'
 import { useState} from 'react'
 import { AiOutlineEye , AiOutlineEyeInvisible} from "react-icons/ai"
 import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,Link} from 'react-router-dom'
 import axios from 'axios';
 
 
@@ -11,12 +11,12 @@ const SignupForm = ({setIsLoggedIn}) => {
   const navigate = useNavigate();
 
  const [formData,setFormData] = useState({
-   firstName:"",
-   lastName:"",
+   firstname:"",
+   lastname:"",
    username:"",
    email:"",
    password:"",
-   confirmPassword:"",
+   confirmpassword:"",
    gender:"",
    profession:"",
    age:"",
@@ -68,7 +68,7 @@ const SignupForm = ({setIsLoggedIn}) => {
 
 function submitHandler(event) {
     event.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.confirmpassword) {
       toast.error('Passwords do not match');
       return;
     }
@@ -89,6 +89,21 @@ function submitHandler(event) {
   
 
 
+// const submitHandler = async(event)=>{
+//    console.log('data :>>' ,formData);
+//    event.preventDefault();
+//    const res = await fetch(`http://localhost:3000/api/v1/usersignup`,{
+//     method : 'POST',
+//     headers:{
+//       'Content-Type' : 'application/json'
+//     },
+//     body: JSON.stringify(formData)
+//    })
+//    const resData = await res.json()
+//    console.log('resdata:>>',resData);
+// }
+
+
   return (
     <div >
          {/* student-Instructor tab */}
@@ -105,10 +120,10 @@ function submitHandler(event) {
            < input
               required
               type="text"
-              name="firstName"
+              name="firstname"
               onChange={changeHandler}
               placeholder='Enter first Name'
-              value={formData.firstName}
+              value={formData.firstname}
               className='bg-gray-800 rounded-[0.5rem] text-gray-300 w-full h-8 p-[12px]'
            />
           </label>
@@ -120,10 +135,10 @@ function submitHandler(event) {
            < input
               required
               type="text"
-              name="lastName"
+              name="lastname"
               onChange={changeHandler}
               placeholder='Enter last Name'
-              value={formData.lastName}
+              value={formData.lastname}
               className='bg-gray-800 rounded-[0.5rem] text-gray-300 w-full h-8 p-[12px]'
            />
           </label>
@@ -201,10 +216,10 @@ function submitHandler(event) {
            < input
               required
               type= {showConfirmPassword ? ("text") : ("password")}
-              name="confirmPassword"
+              name="confirmpassword"
               onChange={changeHandler}
               placeholder='Confirm Password'
-              value={formData.confirmPassword}
+              value={formData.confirmpassword}
               className='bg-gray-800 rounded-[0.5rem] text-gray-300 w-full h-8 p-[12px]' 
            />
 
@@ -284,6 +299,9 @@ function submitHandler(event) {
             Create Account
         </button>
 
+       <div>
+        <span className='text-teal-600 '>Already Have an Account ? <Link to="/login" className="text-orange-600 cursor-pointer underline">Log In</Link> </span>
+       </div>
        </form>
 
     </div>

@@ -1,10 +1,13 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, redirect } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
+import Search from './components/Search'
 import { useState, useEffect } from 'react';
 import PrivateRoute from './components/PrivateRoute';
+import Chat from './messages/Chat';
+
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,7 +31,12 @@ export default function App() {
     check()
   },[user._id])
 
+// const ProtectRoutes = ({children}) => {
+//   const isLoggedIn = localStorage.getItem('user:token') != null
 
+//   if(!isLoggedIn) redirect('/users/signup')
+//   return children
+// }
 
   return (
     <Router>
@@ -52,6 +60,14 @@ export default function App() {
           <Route
             path="/signup"  
             element={<Signup setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
+          />
+            <Route
+            path="/search"  
+            element={<Search setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
+          />
+            <Route
+            path="/messages"  
+            element={<Chat setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
         </Routes>
       </div>

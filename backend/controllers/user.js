@@ -63,10 +63,10 @@ exports.sendOTP = async (req, res) => {
 
 exports.usersignup = async(req, res) => {
     try {
-        const {firstname, lastname, username, email, password, confirmpassword, gender, profession, age, verified, hobbies, otp} = req.body;
+        const {firstname, lastname, username, email, password, confirmpassword, gender, profession, age} = req.body;
         console.log(req.body); 
         
-        if(!firstname || !lastname || !username || !email || !password || !confirmpassword || !gender || !profession || !age || !verified || !hobbies) {
+        if(!firstname || !lastname || !username || !email || !password || !confirmpassword || !gender || !profession || !age) {
             return res.status(403).json({
                 success:false,
                 message:"All fields are required.",
@@ -102,8 +102,8 @@ exports.usersignup = async(req, res) => {
         
 
         // finding the most recent otp
-        const recentOtp = await OTP.find({email}).populate();
-        console.log(recentOtp);
+        // const recentOtp = await OTP.find({email}).populate();
+        // console.log(recentOtp);
 
         // validate otp
         // if (recentOtp.length == 0) {
@@ -112,13 +112,13 @@ exports.usersignup = async(req, res) => {
         //         message:"OTP Not found."
         //     })
         // } 
-        // else
-         if (otp !== recentOtp[0].otp) {
-            return res.status(400).json({
-                success:false,
-                message:"Invalid OTP."
-            })
-        }
+        // // else
+        //  if (otp !== recentOtp[0].otp) {
+        //     return res.status(400).json({
+        //         success:false,
+        //         message:"Invalid OTP."
+        //     })
+        // }
 
         //Hashing of password
         const saltRounds = 10;
@@ -134,8 +134,8 @@ exports.usersignup = async(req, res) => {
             gender,
             profession,
             age,
-            verified,
-            hobbies,
+            // verified,
+            // hobbies,
             image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstname} ${lastname}`,
         });
         
@@ -167,7 +167,7 @@ exports.usersignup = async(req, res) => {
 exports.userlogin = async(req, res) => {
     try {
         const {email, password} = req.body;
-        console.log(req.body);
+        console.log("login data",req.body);
         
         if (!email) {
             return res.status(400).json({
