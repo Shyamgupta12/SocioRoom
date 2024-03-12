@@ -31,7 +31,7 @@ const LoginForm = ({ setIsLoggedIn }) => {
                 toast.success('LogIn Successful');
                 setIsLoggedIn(true);
                 
-                navigate('/messages'); // Redirect to the messages after successful login
+                navigate('/home'); // Redirect to the messages after successful login
             })
             .catch(error => {
                 console.error('Error logging in:', error);

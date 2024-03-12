@@ -7,7 +7,11 @@ import Search from './components/Search'
 import { useState, useEffect } from 'react';
 import PrivateRoute from './components/PrivateRoute';
 import Chat from './messages/Chat';
-import LoggedHome from './components/LoggedHome';
+import VerifyOtp from './components/VerifyOtp';
+
+
+
+
 
 
 export default function App() {
@@ -41,8 +45,8 @@ export default function App() {
 
   return (
     <Router>
-      <div  className='w-screen min-h-screen bg-customColor flex flex-col font-inte '>
-        <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}  user={user} setUser={setUser}/>
+      <div  className='w-screen min-h-screen  flex flex-col font-inte '>
+        {/* <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}  user={user} setUser={setUser}/> */}
         <Routes>
           <Route
             path="/"
@@ -70,10 +74,17 @@ export default function App() {
             path="/messages"  
             element={<Chat setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
-            <Route
-            path="/home"  
-            element={<LoggedHome setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
+
+         <Route
+            path="/otp"  
+            element={<VerifyOtp setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
+
+
+           
+
+            
+           
 
         </Routes>
       </div>

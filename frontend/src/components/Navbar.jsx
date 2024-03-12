@@ -6,6 +6,13 @@ import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Search from './Search';
+import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
+import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import { NavLink } from 'react-router-dom'
+
+
+
 
 const Navbar = ({  setUser, user, setFlag, flag, isLoggedIn, setIsLoggedIn }) => {
  
@@ -34,7 +41,29 @@ const Navbar = ({  setUser, user, setFlag, flag, isLoggedIn, setIsLoggedIn }) =>
     };  
 
     return (
-    <div className='bg-slate-800 border-b-[1px] border-b-slate-300'>
+      <div>
+
+{!isLoggedIn && 
+  <header className='header flex '>
+        <NavLink to="/" className="w-40 h-10 rounded-lg bg-white items-center 
+        justify-center flex font-bold shadow-md">
+            <p className=''>SOCIOROOM</p>
+        </NavLink>
+        <nav className='flex text-lg gap-7 font-medium' >
+            <NavLink to="/Login" className={({ isActive }) => isActive ? 
+            'text-blue-500' : 'text-black'}>
+                Login
+            </NavLink>
+            <NavLink to="/Signup" className={({ isActive }) => isActive ? 
+            'text-blue-500' : 'text-black'}>
+                Signup
+            </NavLink>
+        </nav>
+   </header>
+          }
+
+          {isLoggedIn &&
+            <div className='bg-slate-800 border-b-[1px] border-b-slate-300'>
       <div  className='flex justify-between w-11/12 items-center py-1 mx-auto'>
 
     
@@ -42,7 +71,7 @@ const Navbar = ({  setUser, user, setFlag, flag, isLoggedIn, setIsLoggedIn }) =>
           {!isLoggedIn && 
             <ul className='text-gray-300 text-xl trxt-2xl font-semibold  flex gap-x-6 '>
               <li>
-                <Link to="/">Home</Link>
+                <Link to="/"></Link>
               </li>
              
             </ul>
@@ -50,20 +79,22 @@ const Navbar = ({  setUser, user, setFlag, flag, isLoggedIn, setIsLoggedIn }) =>
           {isLoggedIn &&
             <ul className='text-gray-300 trxt-2xl text-2xl font-semibold  flex gap-x-6 '>
                 <li>
-                <Link to="/">Home</Link>
+                <Link to="/home" >Home</Link>
               </li>
             </ul>
           }
           
-          {!isLoggedIn && ( 
+          {isLoggedIn && ( 
            
             <Search />
           )}
+          <Link to="/notifications">{< CircleNotificationsIcon />}</Link>
+          
           {/* // messages */}
            {isLoggedIn &&
             <ul className='text-gray-300 trxt-2xl text-2xl font-semibold  flex gap-x-6 '>
                 <li>
-                <Link to="/messages">Message</Link>
+                <Link to="/messages">{< ChatBubbleIcon />}</Link>
               </li>
             </ul>
           }
@@ -112,6 +143,9 @@ const Navbar = ({  setUser, user, setFlag, flag, isLoggedIn, setIsLoggedIn }) =>
 
       </div>
     </div>
+          }
+      </div>
+    
   )
 }
 
