@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Search from './Search';
 
 const Navbar = ({  setUser, user, setFlag, flag, isLoggedIn, setIsLoggedIn }) => {
  
@@ -34,12 +35,12 @@ const Navbar = ({  setUser, user, setFlag, flag, isLoggedIn, setIsLoggedIn }) =>
 
     return (
     <div className='bg-slate-800 border-b-[1px] border-b-slate-300'>
-      <div  className='flex justify-between w-11/12 items-center py-4 mx-auto'>
+      <div  className='flex justify-between w-11/12 items-center py-1 mx-auto'>
 
     
-        <nav>
+        <nav className='flex items-center space-x-[50px]'>
           {!isLoggedIn && 
-            <ul className='text-gray-300 trxt-2xl font-semibold  flex gap-x-6 '>
+            <ul className='text-gray-300 text-xl trxt-2xl font-semibold  flex gap-x-6 '>
               <li>
                 <Link to="/">Home</Link>
               </li>
@@ -47,14 +48,34 @@ const Navbar = ({  setUser, user, setFlag, flag, isLoggedIn, setIsLoggedIn }) =>
             </ul>
           }
           {isLoggedIn &&
-            <ul className='text-gray-300 trxt-2xl font-semibold  flex gap-x-6 '>
+            <ul className='text-gray-300 trxt-2xl text-2xl font-semibold  flex gap-x-6 '>
                 <li>
                 <Link to="/">Home</Link>
               </li>
             </ul>
           }
+          
+          {!isLoggedIn && ( 
+           
+            <Search />
+          )}
+          {/* // messages */}
+           {isLoggedIn &&
+            <ul className='text-gray-300 trxt-2xl text-2xl font-semibold  flex gap-x-6 '>
+                <li>
+                <Link to="/messages">Message</Link>
+              </li>
+            </ul>
+          }
+
+            
         </nav>
+
+     
+
+
         <div className='flex items-center gap-x-4 '>
+
           {!isLoggedIn &&
             <Link to="/login">
               <button className='bg-slate-900 text-gray-300 py-[8px] px-[12px] rounded-[8px] border border-Fuchsia-700'>

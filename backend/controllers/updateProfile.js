@@ -61,22 +61,28 @@ exports.deleteProfile = async (req, res) => {
 
 exports.follow = async (req, res) => {
     try {
-        if (req.body.userId === req.params.id) {
+        const userToFollow = await User.findById(req.params.id);
+        
+        if (!userToFollow) {
+            return res.status(404).json("User to follow not found");
+        }
+        
+        if (req.user.id === req.params.id) {
             return res.status(403).json("You can't follow yourself");
         }
 
-        const user = await User.findById(req.params.id);
-        const currentUser = await User.findById(req.body.userId);
+        const currentUser = await User.findById(req.user.id);
 
-        if (!user || !currentUser) {
-            return res.status(404).json("User not found");
+        if (!currentUser) {
+            return res.status(404).json("Current user not found");
         }
 
-        if (!user.followers.includes(req.body.userId)) {
-            await user.updateOne({ $push: { followers: req.body.userId } });
-            await currentUser.updateOne({ $push: { followings: req.params.id } });
-            const email = user.email;
-            await mailSender(email, "From SocioRoom : Followers Increased", `Hurray! ${user.username}, ${currentUser.username} started following you.`);
+        if (!userToFollow.followers.some(u => u._id.equals(req.user.id))) {
+            await userToFollow.updateOne({ $push: { followers: currentUser } });
+            await currentUser.updateOne({ $push: { followings: userToFollow } });
+
+            const email = userToFollow.email;
+            await mailSender(email, "From SocioRoom: Followers Increased", `Hurray! ${userToFollow.username}, ${currentUser.username} started following you.`);
 
             return res.status(200).json("User has been followed");
         } else {
@@ -88,24 +94,38 @@ exports.follow = async (req, res) => {
     }
 };
 
-
 exports.unfollow = async (req, res) => {
-    if (req.body.userId !== req.params.id) {
+    if (req.user.id !== req.params.id) {
         try {
-            const user = await User.findById(req.params.id);
-            const currentUser = await User.findById(req.body.userId);
-            if (user.followers.includes(req.body.userId)) {
-                await user.updateOne({ $pull: { followers: req.body.userId } });
-                await currentUser.updateOne({ $pull: { followings: req.params.id } });
-                return res.status(200).json("user has been unfollowed");
+            const userToUnfollow = await User.findById(req.params.id);
+            const currentUser = await User.findById(req.user.id);
+            
+            if (!userToUnfollow || !currentUser) {
+                return res.status(404).json("User to unfollow or current user not found");
+            }
+
+            if (currentUser.followings.some(u => u._id.equals(req.params.id))) {
+                // Remove userToUnfollow from currentUser's followings
+                currentUser.followings = currentUser.followings.filter(u => !u._id.equals(req.params.id));
+                // Remove currentUser from userToUnfollow's followers
+                userToUnfollow.followers = userToUnfollow.followers.filter(u => !u._id.equals(req.user.id));
+
+                const email = userToUnfollow.email;
+                await mailSender(email, "From SocioRoom: Followers Decreased", `Sorry to say! ${userToUnfollow.username}, ${currentUser.username} started unfollowing you.`);
+
+                // Save updated currentUser and userToUnfollow
+                await currentUser.save();
+                await userToUnfollow.save();
+
+                return res.status(200).json("User has been unfollowed");
             } else {
-                res.status(403).json("you dont follow this user");
+                res.status(403).json("You don't follow this user");
             }
         } catch (err) {
-            res.status(500).json(err);
+            console.error(err);
+            res.status(500).json("Internal Server Error");
         }
-    }
-    else {
-        res.status(403).json("you cant unfollow yourself");
+    } else {
+        res.status(403).json("You can't unfollow yourself");
     }
 };

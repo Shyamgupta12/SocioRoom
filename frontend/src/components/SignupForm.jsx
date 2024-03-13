@@ -1,90 +1,114 @@
-import React, { useState } from 'react';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import { toast } from 'react-toastify';
-import { useNavigate , useHistory } from 'react-router-dom';
+import React from 'react'
+import { useState} from 'react'
+import { AiOutlineEye , AiOutlineEyeInvisible} from "react-icons/ai"
+import { toast } from 'react-toastify'
+import { useNavigate,Link} from 'react-router-dom'
 import axios from 'axios';
 
-const SignupForm = ({ setIsLoggedIn }) => {
+
+const SignupForm = ({setIsLoggedIn}) => {
+
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    firstname: '',
-    lastname: '',
-    username: '',
-    email: '',
-    password: '',
-    confirmpassword: '',
-    gender: '',
-    profession: '',
-    age: '',
-  });
+ const [formData,setFormData] = useState({
+   firstname:"",
+   lastname:"",
+   username:"",
+   email:"",
+   password:"",
+   confirmpassword:"",
+   gender:"",
+   profession:"",
+   age:"",
+   
+  
+ })
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setshowConfirmPassword] = useState(false);
+ const[showPassword , setShowPassword] = useState(false);
+ const[showConfirmPassword , setshowConfirmPassword] = useState(false);
 
-  function changeHandler(event) {
-    setFormData((prevData) => ({
-      ...prevData,
-      [event.target.name]: event.target.value,
-    }));
-  }
+
+ function changeHandler(event){
+
+  setFormData((prevData)  =>(
+      {
+          ...prevData,
+          [event.target.name]:event.target.value
+
+
+      }
+
+  ));
+
+}
+
+// function submitHandler(event){
+//    event.preventDefault();
+//    if(formData.password !== formData.confirmPassword){
+//     toast.error('Passwords do not match');
+//     return;
+//    }
+//    setIsLoggedIn(true);
+//    toast.success("Account Created");
+//    const accountData = {
+//     ...formData
+//    };
+
+//    const finalData = {
+//     ...accountData,
+     
+//    }
+
+//    console.log("Printing Final account Data");
+//    console.log(finalData);
+
+//   //  NAVIGATE TO DASHBOARD 
+//   navigate("/"); 
+// }
+
+function submitHandler(event) {
+    event.preventDefault();
+    if (formData.password !== formData.confirmpassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
   
     const accountData = { ...formData };
+    axios.post("http://localhost:3000/api/v1/usersignup", accountData)
+      .then(response => {
+        console.log('Signup successful:', response.data);
+        setIsLoggedIn(true);
+        toast.success('Account Created');
+        navigate('/');
+      })
+      .catch(error => {
+        console.error('Error signing up:', error);
+        toast.error('Error signing up. Please try again later.');
+      });
+  }
   
-    const PostData = async (e) => {
-      e.preventDefault();
-      const {
-        firstname,
-        lastname,
-        username,
-        email,
-        password,
-        confirmpassword,
-        gender,
-        profession,
-        age
-      } = accountData;
-    
-      try {
-        const res = await fetch("/api/v1/usersignup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            firstname,
-            lastname,
-            username,
-            email,
-            password,
-            confirmpassword,
-            gender,
-            profession,
-            age
-          })
-        });
-    
-        if (res.ok) {
-          window.alert("Registration Successfully.");
-          console.log("Registration Successfully.");
-        } else {
-          const data = await res.json();
-          window.alert("Invalid Registration: " + data.message);
-          console.log("Invalid Registration: ", data.message);
-        }
-      } catch (error) {
-        console.error("Error during registration:", error);
-        window.alert("Error during registration. Please try again.");
-      }
-    };
-    
-    
+
+
+// const submitHandler = async(event)=>{
+//    console.log('data :>>' ,formData);
+//    event.preventDefault();
+//    const res = await fetch(http://localhost:3000/api/v1/usersignup,{
+//     method : 'POST',
+//     headers:{
+//       'Content-Type' : 'application/json'
+//     },
+//     body: JSON.stringify(formData)
+//    })
+//    const resData = await res.json()
+//    console.log('resdata:>>',resData);
+// }
+
 
   return (
     <div >
          {/* student-Instructor tab */}
 
-       <form method='POST'> 
+       <form onSubmit={submitHandler}> 
 
          {/* first name and lastname */}
        <div className='flex  gap-x-4 mt-2'>
@@ -96,10 +120,10 @@ const SignupForm = ({ setIsLoggedIn }) => {
            < input
               required
               type="text"
-              name="firstName"
+              name="firstname"
               onChange={changeHandler}
               placeholder='Enter first Name'
-              value={formData.firstName}
+              value={formData.firstname}
               className='bg-gray-800 rounded-[0.5rem] text-gray-300 w-full h-8 p-[12px]'
            />
           </label>
@@ -111,10 +135,10 @@ const SignupForm = ({ setIsLoggedIn }) => {
            < input
               required
               type="text"
-              name="lastName"
+              name="lastname"
               onChange={changeHandler}
               placeholder='Enter last Name'
-              value={formData.lastName}
+              value={formData.lastname}
               className='bg-gray-800 rounded-[0.5rem] text-gray-300 w-full h-8 p-[12px]'
            />
           </label>
@@ -192,10 +216,10 @@ const SignupForm = ({ setIsLoggedIn }) => {
            < input
               required
               type= {showConfirmPassword ? ("text") : ("password")}
-              name="confirmPassword"
+              name="confirmpassword"
               onChange={changeHandler}
               placeholder='Confirm Password'
-              value={formData.confirmPassword}
+              value={formData.confirmpassword}
               className='bg-gray-800 rounded-[0.5rem] text-gray-300 w-full h-8 p-[12px]' 
            />
 
@@ -271,10 +295,13 @@ const SignupForm = ({ setIsLoggedIn }) => {
            />
           </label>
 
-        <button onClick={PostData} className='w-full bg-yellow-400 rounded-[8px] font-medium text-gray-900 px-[8px] py-[5px] mt-4'>
+        <button className='w-full bg-yellow-400 rounded-[8px] font-medium text-gray-900 px-[8px] py-[5px] mt-4'>
             Create Account
         </button>
 
+       <div>
+        <span className='text-teal-600 '>Already Have an Account ? <Link to="/login" className="text-orange-600 cursor-pointer underline">Log In</Link> </span>
+       </div>
        </form>
 
     </div>
