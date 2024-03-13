@@ -1,7 +1,7 @@
 import React from 'react';
 import useConversation from '../zustand/useConversation';
 
-const Conversation = ({ conversation, lastInd, emoji }) => {
+const Conversation = ({ conversation, lastInd }) => {
     const { selectedConversation, setSelectedConversation } = useConversation();
 
     const isSelected = selectedConversation?._id === conversation._id;
@@ -26,9 +26,6 @@ const Conversation = ({ conversation, lastInd, emoji }) => {
                         <p className="font-bold text-gray-200">
                             {conversation.username}
                         </p>
-                        <span className="text-xl">
-                            {emoji}
-                        </span>
                     </div>
                 </div>
             </div>

@@ -79,7 +79,7 @@ exports.usersignup = async(req, res) => {
             return res.status(403).json({
                 success:false,
                 message:"Password don't match.",
-            })
+            })  
         }
         
         // finding that user is already registered or not 
@@ -299,3 +299,29 @@ exports.logout = (req, res) => {
 //             })
 //         }
 // }
+
+exports.getusernames = async (req, res) => {
+    try {
+        // Assuming req.user contains information about the logged-in user
+        const loggedInUsername = req.user.username; // Change this according to your implementation
+
+        // Find all users except the logged-in user
+        const users = await User.find({ username: { $ne: loggedInUsername } });
+
+        // Extract usernames from the user objects
+        const usernames = users.map(user => user.username);
+
+        // Return response
+        res.status(200).json({
+            success: true,
+            usernames: usernames
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Error while getting usernames.",
+            error: error.message // Include error message in the response
+        });
+    }
+};

@@ -9,6 +9,7 @@ const {Post, updatePost, deletePost, likePost} = require("../controllers/posts")
 const {Conversation , getConversation, message, messageId, getusers} = require("../controllers/Conversation");
 const {sendMessage, getMessages} = require("../controllers/chat");
 const {chatusers} = require("../controllers/chatusers");
+const {getusernames} = require("../controllers/user");
 
 router.post("/usersignup", usersignup);
 router.post("/sendotp", sendOTP);
@@ -31,7 +32,8 @@ router.put("/:id/like", likePost);
 
 // Assuming auth middleware is correctly implemented and sets req.user
 router.post('/send/:id' , auth, sendMessage);
-router.get('/getmessges/:id', auth, getMessages);
+router.get('/getmessages/:id', auth, getMessages);
 router.get('/chatusers', auth , chatusers);
+router.get('/getusernames', auth, getusernames);
 
 module.exports = router;
