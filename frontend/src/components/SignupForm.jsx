@@ -79,7 +79,7 @@ function submitHandler(event) {
         console.log('Signup successful:', response.data);
         setIsLoggedIn(true);
         toast.success('Account Created');
-        navigate('/');
+        navigate('/home');
       })
       .catch(error => {
         console.error('Error signing up:', error);
