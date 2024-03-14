@@ -78,13 +78,7 @@ export default function App() {
          <Route
             path="/otp"  
             element={<VerifyOtp setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
-          />
-
-
-           
-
-            
-           
+          />    
 
         </Routes>
       </div>
