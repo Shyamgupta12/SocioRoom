@@ -3,24 +3,32 @@ import Navbar from './components/Navbar';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
-import Search from './components/Search'
+// import Search from './components/Search'
 import { useState, useEffect } from 'react';
 import PrivateRoute from './components/PrivateRoute';
 import Chat from './messages/Chat';
-import VerifyOtp from './components/VerifyOtp';
-
-
-
-
+import MyProfile from './Pages/MyProfile';
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
+import { themeSettings } from "./theme";
+import LoggedHome from './components/LoggedHome';
+import Search from './components/Search';
 
 
 export default function App() {
+// theme seeting dark or light
+const mode = useSelector((state) => state.mode);
+const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+const isAuth = Boolean(useSelector((state) => state.token));
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user,setUser]=useState({})
   console.log(user)
 
   useEffect(()=>{
-    const check=async() => {
+    const check=async()=>{
       try{
         const loggedInUser = localStorage.getItem("user");
         if (loggedInUser) {
@@ -43,10 +51,15 @@ export default function App() {
 //   return children
 // }
 
+
+   // bg-customColor
   return (
     <Router>
-      <div  className='w-screen min-h-screen  flex flex-col font-inte '>
-        {/* <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}  user={user} setUser={setUser}/> */}
+        
+      <div  className='w-screen min-h-screen  flex flex-col font-inte '>   
+      <ThemeProvider theme={theme}>
+        <CssBaseline/>
+        <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}  user={user} setUser={setUser}/>
         <Routes>
           <Route
             path="/"
@@ -74,15 +87,20 @@ export default function App() {
             path="/messages"  
             element={<Chat setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
-
-         <Route
-            path="/otp"  
-            element={<VerifyOtp setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
-          />    
-
+            <Route
+            path="/myprofile"  
+            element={<MyProfile setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
+          />
+           <Route
+            path="/home"  
+            element={<LoggedHome setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
+          />
         </Routes>
+      </ThemeProvider>
+        
       </div>
     
     </Router>
+    
   );
 }

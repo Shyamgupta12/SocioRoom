@@ -92,7 +92,7 @@ function submitHandler(event) {
 // const submitHandler = async(event)=>{
 //    console.log('data :>>' ,formData);
 //    event.preventDefault();
-//    const res = await fetch(http://localhost:3000/api/v1/usersignup,{
+//    const res = await fetch(`http://localhost:3000/api/v1/usersignup`,{
 //     method : 'POST',
 //     headers:{
 //       'Content-Type' : 'application/json'
