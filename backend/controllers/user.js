@@ -311,7 +311,16 @@ exports.getusernames = async (req, res) => {
         // Extract usernames from the user objects
         const usernames = users.map(user => user.username);
 
-        // Return response
+        // Check if the usernames array is empty
+        if (usernames.length === 0) {
+            // If no usernames found, return an appropriate response
+            return res.status(404).json({
+                success: false,
+                message: "No usernames found."
+            });
+        }
+
+        // Return response with usernames
         res.status(200).json({
             success: true,
             usernames: usernames
