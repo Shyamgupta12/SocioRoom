@@ -14,7 +14,7 @@ const {getusernames} = require("../controllers/user");
 router.post("/usersignup", usersignup);
 router.post("/sendotp", sendOTP);
 router.post("/userlogin", userlogin);
-router.post("/logout", logout);
+router.post("/logout", auth , logout);
 router.post("/reset-password-token", resetPasswordToken);
 router.post("/resetPassword", resetPassword);
 router.put("/:id", updateProfile);

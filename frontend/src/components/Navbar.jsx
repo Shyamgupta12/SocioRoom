@@ -56,42 +56,49 @@ const Navbar = ({isLoggedIn,setIsLoggedIn}) => {
 
   
  
-      const handleLogout = async () => {
-          try {
-              const response = await axios.post("http://localhost:3000/api/v1/userlogout"); 
-              if (response.status === 200) {
-                  // Clear token from local storage
-                  localStorage.removeItem('token');
-                  // Update login state
-                  setIsLoggedIn(false);
-                  // Notify the user
-                 toast.success('Logout successful');
-              } else {
-                 toast.error('Logout failed');
-              }
-          } catch (error) {
-              console.error('Logout error:', error);
-             toast.error('Logout failed');
+  const Logout = async () => {
+    try {
+          const getCookie = (name) => {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
           }
-      
-  
-      return (
-          <div>
-              {isLoggedIn ? (
-                  <button onClick={handleLogout}>Logout</button>
-              ) : (
-                  // Render login or signup button
-                  <div>
-                      <button>Login</button>
-                      <button>Signup</button>
-                  </div>
-              )}
-          </div>
-      );
-  };
-  
+        
+        const token = getCookie('token');
+
+        const response = await fetch("http://localhost:3000/api/v1/logout", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorisation': `Bearer ${token}`,
+            },
+        });
+
+        console.log(response);
+
+        if (response.ok) {
+            // Clear token from local storage
+            // document.cookie=null;
+            document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            console.log(document.cookie)
+            // Update login state
+            setIsLoggedIn(false);
+            // Notify the user
+            toast.success('Logout successful');
+        } else {
+            // If response is not ok, throw an error
+            throw new Error('Logout failed');
+        }
+    } catch (error) {
+        console.error('Logout error:', error);
+        toast.error('Logout failed');
+    }
+};
+
 
   
+ 
+ 
 
     // const [navuser, setNavuser] = useState({});
 
@@ -217,7 +224,7 @@ const Navbar = ({isLoggedIn,setIsLoggedIn}) => {
         <MenuItem value={fullName}>
           <Typography>{fullName}</Typography>
         </MenuItem>
-        <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
+        <MenuItem onClick={Logout}>Log Out</MenuItem>
       </Select>
     </FormControl>
   </FlexBetween>
@@ -292,7 +299,7 @@ const Navbar = ({isLoggedIn,setIsLoggedIn}) => {
           <MenuItem value={fullName}>
             <Typography>{fullName}</Typography>
           </MenuItem>
-          <MenuItem onClick={() => handleLogout()}>
+          <MenuItem onClick={() => Logout}>
             Log Out
           </MenuItem>
         </Select>

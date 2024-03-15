@@ -29,13 +29,29 @@ const Login = ({ setIsLoggedIn }) => {
     event.preventDefault();
     setIsLoading(true); // Set loading state
     setCurrentAnimation('hit'); // Change animation while loading
-
+  
     try {
       const response = await axios.post("http://localhost:3000/api/v1/userlogin", formData);
       console.log('Login successful:', response.data);
-
-      document.cookie = `token=${response.data.token}`;
       toast.success('LogIn Successful');
+  
+      const expiryDate = new Date();
+expiryDate.setDate(expiryDate.getDate() + 1); // Set expiry date to 24 hours from now
+
+// Set the token as a cookie with expiry time
+document.cookie = `token=${response.data.token}; expires=${expiryDate.toUTCString()}; path=/`;
+
+// Debugging logs
+const tokenCookie = document.cookie.split(';').find(cookie => cookie.trim().startsWith('token='));
+const tokenFromCookie = tokenCookie ? tokenCookie.split('=')[1] : null;
+
+console.log('Token from Cookie:', tokenFromCookie);
+console.log('Response Token:', response.data.token);
+console.log('Token Match:', tokenFromCookie === response.data.token);
+
+
+
+  
       setIsLoggedIn(true);
       navigate('/home'); // Redirect to the messages after successful login
     } catch (error) {
@@ -44,6 +60,8 @@ const Login = ({ setIsLoggedIn }) => {
       setIsLoading(false); // Reset loading state
     }
   };
+  
+
 
   const handleFocus = () => setCurrentAnimation('walk');
   const handleBlur = () => setCurrentAnimation('idle');

@@ -241,10 +241,14 @@ exports.userlogin = async(req, res) => {
 }
 
 exports.logout = (req, res) => {
+    console.log("logout")
 	try {
-		res.cookie("jwt", "", { maxAge: 0 });
+		// Clear the JWT cookie by setting its maxAge to 0
+		res.clearCookie("token");
+		// Respond with a 200 status code and a success message
 		res.status(200).json({ message: "Logged out successfully" });
 	} catch (error) {
+		// If an error occurs, log it and send a 500 status code with an error message
 		console.log("Error in logout controller", error.message);
 		res.status(500).json({ error: "Internal Server Error" });
 	}
