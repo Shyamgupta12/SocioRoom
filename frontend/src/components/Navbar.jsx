@@ -3,6 +3,8 @@ import { Mail, Notifications  } from "@mui/icons-material";
 import React, { useState , useEffect} from 'react'
 import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
 import { toast } from 'react-toastify';
+import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const StyledToolbar = styled(Toolbar)({
@@ -35,9 +37,9 @@ const UserBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const Navbar = ({setIsLoggedIn}) => {
+export const Navbar = ({ isLoggedIn, setIsLoggedIn}) => {
   // Frontend code
-
+  const navigate = useNavigate();
   const [open , setOpen] = useState(false);
   const [input, setInput] = useState("");
    
@@ -97,6 +99,8 @@ export const Navbar = ({setIsLoggedIn}) => {
             setIsLoggedIn(false);
             // Notify the user
             toast.success('Logout successful');
+           
+           navigate("/") // Redirect to the "/" after successful login
         } else {
             // If response is not ok, throw an error
             throw new Error('Logout failed');
@@ -109,52 +113,83 @@ export const Navbar = ({setIsLoggedIn}) => {
 
 
   return (
-   <AppBar position='sticky' >
-     <StyledToolbar>
-       <Typography variant='h6'  sx={{ display: { xs: "none", sm: "block" } }}>SOCIOROOM</Typography>
-       <ConnectWithoutContactIcon   sx={{ display: { xs: "block", sm: "none" } }} />
-      <Search><InputBase placeholder='search...' value={input} onChange={(e) => {handleChange(e.target.value)}}/></Search>
-      <Icons>
-            <Badge badgeContent={4} color="error">
-            <Mail />
-          </Badge>
-          <Badge badgeContent={2} color="error">
-            <Notifications />
-          </Badge>
-          <Avatar
-            sx={{ width: 30, height: 30 }}
-            src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            onClick={(e) => setOpen(true)}
-          />
-      </Icons>
-      <UserBox onClick={(e) => setOpen(true)}>
-        <Avatar
-            sx={{ width: 30, height: 30 }}
-            src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            
-        />
-        <Typography variant="span">John</Typography>
-      </UserBox>
-    </StyledToolbar>
-    <Menu
-        id="demo-positioned-menu"
-        aria-labelledby="demo-positioned-button"
-        open={open}
-        onClose={(e) => setOpen(false)}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      > 
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>My account</MenuItem>
-        <MenuItem onClick={Logout}>Logout</MenuItem>
-    </Menu>
-   </AppBar>
+    <div>
+
+{!isLoggedIn && 
+  <header className='header flex '>
+        <NavLink to="/" className="w-40 h-10 rounded-lg bg-white items-center 
+        justify-center flex font-bold shadow-md">
+            <p className=''>SOCIOROOM</p>
+        </NavLink>
+        <nav className='flex text-lg gap-7 font-medium' >
+            <NavLink to="/Login" className={({ isActive }) => isActive ? 
+            'text-blue-500' : 'text-black'}>
+                Login
+            </NavLink>
+            <NavLink to="/Signup" className={({ isActive }) => isActive ? 
+            'text-blue-500' : 'text-black'}>
+                Signup
+            </NavLink>
+        </nav>
+   </header>
+          }
+
+
+
+    { isLoggedIn && 
+
+<AppBar position='sticky' >
+<StyledToolbar>
+  <Typography variant='h6'  sx={{ display: { xs: "none", sm: "block" } }}>SOCIOROOM</Typography>
+  <ConnectWithoutContactIcon   sx={{ display: { xs: "block", sm: "none" } }} />
+ <Search><InputBase placeholder='search...' value={input} onChange={(e) => {handleChange(e.target.value)}}/></Search>
+ <Icons>
+       <Badge badgeContent={4} color="error">
+       <Mail />
+     </Badge>
+     <Badge badgeContent={2} color="error">
+       <Notifications />
+     </Badge>
+     <Avatar
+       sx={{ width: 30, height: 30 }}
+       src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+       onClick={(e) => setOpen(true)}
+     />
+ </Icons>
+ <UserBox onClick={(e) => setOpen(true)}>
+   <Avatar
+       sx={{ width: 30, height: 30 }}
+       src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+       
+   />
+   <Typography variant="span">John</Typography>
+ </UserBox>
+</StyledToolbar>
+<Menu
+   id="demo-positioned-menu"
+   aria-labelledby="demo-positioned-button"
+   open={open}
+   onClose={(e) => setOpen(false)}
+   anchorOrigin={{
+     vertical: "top",
+     horizontal: "right",
+   }}
+   transformOrigin={{
+     vertical: "top",
+     horizontal: "right",
+   }}
+ > 
+   <MenuItem>Profile</MenuItem>
+   <MenuItem>My account</MenuItem>
+   <MenuItem onClick={Logout}>Logout</MenuItem>
+</Menu>
+</AppBar>
+
+    }
+
+
+    </div>
+  
   )
 }
 
