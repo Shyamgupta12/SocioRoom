@@ -3,6 +3,7 @@ const {userController} = require("./controllers/user");
 
 // connect DB
 const dbConnect = require("./database/connection");
+const auth = require("./middlewares/Auth");
 
 const bodyParser = require('body-parser');
 const app = express();
@@ -25,6 +26,7 @@ app.use(cors({
 
 app.use(express.urlencoded({extended:false}));
 
+
 // to parse the data
 app.use(express.json());
 app.use(cookieParser());
@@ -35,6 +37,45 @@ app.use("/api/v1", router);
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
+
+// changes start------ 
+const mongoose = require('mongoose')
+const multer = require('multer')
+const path = require('path')
+const UserModel = require('./models/posts')
+app.use(express.static('public'));
+
+const storage = multer.diskStorage({
+    destination:(req,file,cb)=> {
+        cb(null,'public/Images')
+    },
+    filename : (req , file ,cb) => {
+        cb(null,file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({
+    storage:storage
+})
+
+app.post('/upload', auth, upload.single('file'),(req,res)=>{
+    // console.log("post send");
+    console.log(req)
+    UserModel.create({ userId: req.user._id, caption: req.body.content, image: req.file.filename })
+        .then(result => res.json(result))
+        .catch(err => res.status(500).json({ error: err.message }));
+})
+
+app.get('/getImage', (req, res) => {
+    UserModel.find()
+        .then(users => res.json(users))
+        .catch(err => res.status(500).json({ error: err.message }));
+});
+
+// changes over---------
+
+
 
 // connecting database
 dbConnect();

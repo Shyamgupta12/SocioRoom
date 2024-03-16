@@ -18,3 +18,4 @@ const chatusers = async (req, res) => {
 };
 
 module.exports = { chatusers };
+

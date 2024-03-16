@@ -10,6 +10,12 @@ import { useState } from "react";
 
 const LoggedHome = () => {
   const [mode, setMode] = useState("light");
+  const [posts, setPosts] = useState([]);
+
+  const addPost = (newPost) => {
+    setPosts(prevPosts => [newPost, ...prevPosts]);
+  };
+
 
   const darkTheme = createTheme({
     palette: {
@@ -22,10 +28,10 @@ const LoggedHome = () => {
       <Stack direction="row" spacing={2} justifyContent = "space-between">
       {/* <Navbar /> */}
        <Sidebar  setMode={setMode} mode={mode} />
-       <Feed />
+       <Feed posts={posts}/>
        <RightSidebar />
       </Stack>
-     <Add />
+     <Add onPostAdded={addPost} />
     </Box>
     </ThemeProvider>
   

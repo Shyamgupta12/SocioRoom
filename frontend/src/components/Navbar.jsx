@@ -3,7 +3,7 @@ import { Mail, Notifications  } from "@mui/icons-material";
 import React, { useState , useEffect} from 'react'
 import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
 import { toast } from 'react-toastify';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -114,7 +114,7 @@ export const Navbar = ({ isLoggedIn, setIsLoggedIn}) => {
 
   return (
     <div>
-
+ {/* not logged nav bar */}
 {!isLoggedIn && 
   <header className='header flex '>
         <NavLink to="/" className="w-40 h-10 rounded-lg bg-white items-center 
@@ -135,17 +135,17 @@ export const Navbar = ({ isLoggedIn, setIsLoggedIn}) => {
           }
 
 
-
+ {/* logged in navbar */}
     { isLoggedIn && 
 
 <AppBar position='sticky' >
 <StyledToolbar>
-  <Typography variant='h6'  sx={{ display: { xs: "none", sm: "block" } }}>SOCIOROOM</Typography>
+<NavLink to={"/home"}><Typography variant='h6'  sx={{ display: { xs: "none", sm: "block" } }}>SOCIOROOM</Typography></NavLink>
   <ConnectWithoutContactIcon   sx={{ display: { xs: "block", sm: "none" } }} />
  <Search><InputBase placeholder='search...' value={input} onChange={(e) => {handleChange(e.target.value)}}/></Search>
  <Icons>
        <Badge badgeContent={4} color="error">
-       <Mail />
+      <NavLink to={"/messages"}> <Mail /></NavLink>
      </Badge>
      <Badge badgeContent={2} color="error">
        <Notifications />

@@ -8,17 +8,20 @@ const PostSchema = new mongoose.Schema(
     },
     caption: {
       type: String,
-      max: 500,
+      maxlength: 500, // Corrected 'max' to 'maxlength'
     },
     image: {
       type: String,
     },
     likes: {
-      type: Array,
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
       default: [],
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Post", PostSchema);
+ const UserModel = mongoose.model("Post", PostSchema);
+
+// module.exports = mongoose.model("Post", PostSchema);
+ module.exports = UserModel

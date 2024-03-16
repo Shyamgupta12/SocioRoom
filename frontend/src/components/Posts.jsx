@@ -1,4 +1,6 @@
+import React, { useEffect, useState } from "react";
 import { Favorite, FavoriteBorder, MoreVert, Share } from "@mui/icons-material";
+import axios from 'axios';
 import {
   Avatar,
   Card,
@@ -10,34 +12,74 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-const Post = () => {
+
+const fetchUserData = async () => {
+  try {
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, '$1');
+    const response = await axios.get('http://localhost:3000/user', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    throw error; // Rethrow the error to handle it where this function is called
+  }
+};
+
+
+
+const Post = ({ avatar, title, subheader, content, image }) => {
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const userData = await fetchUserData();
+        setUserData(userData);
+        console.log("User Data:", userData); // Log userData here
+      } catch (error) {
+        console.error('Error getting user data:', error);
+      }
+    };
+
+    getUserData();
+  }, []);
+
+  console.log("Updated User Data:", userData);
+
   return (
     <Card sx={{ margin: 5 }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-            R
-          </Avatar>
+          userData ? (
+            <Avatar src={userData.avatar} sx={{ bgcolor: "red" }} aria-label="recipe">
+              {avatar}
+            </Avatar>
+          ) : (
+            <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
+              {avatar}
+            </Avatar>
+          )
         }
         action={
           <IconButton aria-label="settings">
             <MoreVert />
           </IconButton>
         }
-        title="John Doe"
-        subheader="September 14, 2022"
+        title={title}
+        subheader={subheader}
       />
-      <CardMedia
+      {image && <CardMedia
         component="img"
         height="20%"
-        image="https://images.pexels.com/photos/4534200/pexels-photo-4534200.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-        alt="Paella dish"
-      />
+        src={`http://localhost:3000/images/${image}`}
+        alt="image"
+      />}
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
+          {content}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

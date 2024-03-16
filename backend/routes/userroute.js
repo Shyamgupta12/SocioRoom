@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require("../middlewares/Auth");
 
-const {usersignup, userlogin, sendOTP, logout} = require('../controllers/user');
+const {usersignup, userlogin, sendOTP, logout, user} = require('../controllers/user');
 const {resetPasswordToken, resetPassword} = require("../controllers/ResetPassword");
 const {updateProfile, deleteProfile, follow, unfollow} = require("../controllers/updateProfile");
 const {Post, updatePost, deletePost, likePost} = require("../controllers/posts");
@@ -21,7 +21,9 @@ router.put("/:id", updateProfile);
 router.delete("/:id", deleteProfile);
 router.put("/:id/follow", auth , follow);
 router.put("/:id/unfollow", auth, unfollow);
+
 router.post("/posts", Post);
+
 router.put("/:id/posts", updatePost);
 router.delete("/:id/posts", deletePost);
 router.put("/:id/like", likePost);
@@ -35,5 +37,6 @@ router.post('/send/:id' , auth, sendMessage);
 router.get('/getmessages/:id', auth, getMessages);
 router.get('/chatusers', auth , chatusers);
 router.get('/getusernames', auth, getusernames);
+router.get('/user', user);
 
 module.exports = router;
