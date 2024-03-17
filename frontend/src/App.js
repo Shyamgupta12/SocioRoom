@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, redirect ,Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
@@ -55,7 +55,7 @@ const isAuth = Boolean(useSelector((state) => state.token));
    // bg-customColor
   return (
     <Router>
-        
+        {/* <Switch> */}
       <div  className='w-screen min-h-screen  flex flex-col font-inte '>   
       <ThemeProvider theme={theme}>
         <CssBaseline/>
@@ -99,7 +99,7 @@ const isAuth = Boolean(useSelector((state) => state.token));
       </ThemeProvider>
         
       </div>
-    
+      {/* </Switch> */}
     </Router>
     
   );

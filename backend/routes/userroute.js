@@ -5,7 +5,7 @@ const auth = require("../middlewares/Auth");
 const {usersignup, userlogin, sendOTP, logout, user} = require('../controllers/user');
 const {resetPasswordToken, resetPassword} = require("../controllers/ResetPassword");
 const {updateProfile, deleteProfile, follow, unfollow} = require("../controllers/updateProfile");
-const {Post, updatePost, deletePost, likePost} = require("../controllers/posts");
+const {Post, updatePost, deletePost, likePost, feed} = require("../controllers/posts");
 const {Conversation , getConversation, message, messageId, getusers} = require("../controllers/Conversation");
 const {sendMessage, getMessages} = require("../controllers/chat");
 const {chatusers} = require("../controllers/chatusers");
@@ -37,6 +37,7 @@ router.post('/send/:id' , auth, sendMessage);
 router.get('/getmessages/:id', auth, getMessages);
 router.get('/chatusers', auth , chatusers);
 router.get('/getusernames', auth, getusernames);
-router.get('/user', user);
+router.get('/user/:id', user);
+router.get('/feed' , auth, feed);
 
 module.exports = router;

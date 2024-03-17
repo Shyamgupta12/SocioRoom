@@ -28,7 +28,7 @@ const LoggedHome = () => {
       <Stack direction="row" spacing={2} justifyContent = "space-between">
       {/* <Navbar /> */}
        <Sidebar  setMode={setMode} mode={mode} />
-       <Feed posts={posts}/>
+       <Feed />
        <RightSidebar />
       </Stack>
      <Add onPostAdded={addPost} />

@@ -63,3 +63,19 @@ exports.likePost = async (req, res) => {
     }
 }
 
+exports.feed = async (req, res) => {
+    try {
+        const userid = req.user.id;
+        const posts = await Post.find().populate("username", "username image");
+        // const post = await (posts, userid);
+        
+        console.log(posts);
+
+        res.status(201).json(posts);
+    }
+    catch (error) {
+        console.log(error.message);
+        res.status(500).json({error:"Internal Server Error"});
+    }
+}
+
