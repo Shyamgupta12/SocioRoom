@@ -8,44 +8,31 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
-  Checkbox,
   IconButton,
   Typography,
 } from "@mui/material";
 
-const fetchUserData = async () => {
-  try {
-    const token = document.cookie.replace(/(?:(?:^|.;\s)token\s*=\s*([^;]).$)|^.*$/, '$1');
-    const response = await axios.get('http://localhost:3000/user', {
-      headers: {
-        'Authorization': `Bearer ${token}`, // Fix the string interpolation here
-      }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-    throw error; // Rethrow the error to handle it where this function is called
-  }
-};
-
-const Post = ({ key, username ,caption, image, likes, avatar}) => {
+const Vcard = ({ username, caption, image, likes, avatar }) => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const getUserData = async () => {
+    const fetchUserData = async () => {
       try {
-        const userData = await fetchUserData();
-        setUserData(userData);
-        console.log("User Data:", userData); // Log userData here
+        // Make a request to fetch user data
+        const response = await axios.get('http://localhost:3000/user', {
+          headers: {
+            'Authorization': `Bearer ${document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).$)|^.*$/, '$1')}`,
+          }
+        });
+        setUserData(response.data);
       } catch (error) {
-        console.error('Error getting user data:', error);
+        console.error('Error fetching user data:', error);
       }
     };
 
-    getUserData();
+    // Call the function to fetch user data
+    fetchUserData();
   }, []);
-
-  console.log("Updated User Data:", userData);
 
   return (
     <Card sx={{ margin: 5 }}>
@@ -66,13 +53,12 @@ const Post = ({ key, username ,caption, image, likes, avatar}) => {
             <MoreVert />
           </IconButton>
         }
-        // title={title}
         subheader={username}
       />
       {image && <CardMedia
         component="img"
         height="20%"
-        src={`http://localhost:3000/images/${image}`} // Fix the string interpolation here
+        src={`http://localhost:3000/images/${image}`}
         alt="image"
       />}
       <CardContent>
@@ -82,10 +68,7 @@ const Post = ({ key, username ,caption, image, likes, avatar}) => {
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
-          <Checkbox
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite sx={{ color: "red" }} />}
-          />
+          <FavoriteBorder />
         </IconButton>
         <IconButton aria-label="share">
           <Share />
@@ -95,4 +78,4 @@ const Post = ({ key, username ,caption, image, likes, avatar}) => {
   );
 };
 
-export default Post;
+export default Vcard;

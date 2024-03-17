@@ -329,9 +329,9 @@ exports.getusernames = async (req, res) => {
 
 exports.user = async (req, res) => {
     try {
-        const loggedInUserId = req.user._id;
+        const postuser = req.params.id;
 
-        const user = await User.findOne({ _id: loggedInUserId });
+        const user = await User.findOne({ _id: postuser });
 
         if (!user) {
             return res.status(404).json({ error: "User not found" });

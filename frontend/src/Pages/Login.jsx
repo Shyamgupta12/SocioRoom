@@ -7,6 +7,7 @@ import Moder from '../components/Moder';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+
 const Login = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
 
@@ -32,6 +33,9 @@ const Login = ({ setIsLoggedIn }) => {
   
     try {
       const response = await axios.post("http://localhost:3000/api/v1/userlogin", formData);
+      // const dataa = await response.json();
+      // localStorage.setItem("chat-user",JSON.stringify(dataa));
+      // setAuthUser(dataa);
       console.log('Login successful:', response.data);
       toast.success('LogIn Successful');
   
@@ -42,16 +46,13 @@ expiryDate.setDate(expiryDate.getDate() + 1); // Set expiry date to 24 hours fro
 document.cookie = `token=${response.data.token}; expires=${expiryDate.toUTCString()}; path=/`;
 
 // Debugging logs
-const tokenCookie = document.cookie.split(';').find(cookie => cookie.trim().startsWith('token='));
-const tokenFromCookie = tokenCookie ? tokenCookie.split('=')[1] : null;
+// const tokenCookie = document.cookie.split(';').find(cookie => cookie.trim().startsWith('token='));
+// const tokenFromCookie = tokenCookie ? tokenCookie.split('=')[1] : null;
 
-console.log('Token from Cookie:', tokenFromCookie);
-console.log('Response Token:', response.data.token);
-console.log('Token Match:', tokenFromCookie === response.data.token);
+// console.log('Token from Cookie:', tokenFromCookie);
+// console.log('Response Token:', response.data.token);
+// console.log('Token Match:', tokenFromCookie === response.data.token);
 
-
-
-  
       setIsLoggedIn(true);
       navigate('/home'); // Redirect to the messages after successful login
     } catch (error) {

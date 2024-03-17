@@ -42,8 +42,8 @@ const Add = ({ onPostAdded }) => {
   };
 
  
-  const handlePost = (e) => {
-
+  const handlePost = () => {
+    
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, '$1');
 
     const formdata = new FormData();
@@ -62,7 +62,10 @@ const Add = ({ onPostAdded }) => {
      setOpen(false)
       toast.success("post added ")
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err);
+      toast.error("post not posted")
+    })
   }
    
   useEffect(()=>{
