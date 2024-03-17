@@ -4,12 +4,14 @@ import axios from 'axios';
 import Fox from "../models/Fox";
 import Moder from '../components/Moder';
 
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useAuthContext } from '../context/AuthContext';
 
 
 const Login = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
+  const { setAuthUser } = useAuthContext();
 
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,48 +21,34 @@ const Login = ({ setIsLoggedIn }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentAnimation, setCurrentAnimation] = useState('idle'); // Corrected typo
 
-  const handleChange = event => {
+  function handleChange(event) {
     setFormData(prevData => ({
-      ...prevData,
-      [event.target.name]: event.target.value
+        ...prevData,
+        [event.target.name]: event.target.value
     }));
-  };
+}
 
-  const handleSubmit = async event => {
+  function handleSubmit(event) {
     event.preventDefault();
-    setIsLoading(true); // Set loading state
-    setCurrentAnimation('hit'); // Change animation while loading
-  
-    try {
-      const response = await axios.post("http://localhost:3000/api/v1/userlogin", formData);
-      // const dataa = await response.json();
-      // localStorage.setItem("chat-user",JSON.stringify(dataa));
-      // setAuthUser(dataa);
-      console.log('Login successful:', response.data);
-      toast.success('LogIn Successful');
-  
-      const expiryDate = new Date();
-expiryDate.setDate(expiryDate.getDate() + 1); // Set expiry date to 24 hours from now
 
-// Set the token as a cookie with expiry time
-document.cookie = `token=${response.data.token}; expires=${expiryDate.toUTCString()}; path=/`;
+    axios.post("http://localhost:3000/api/v1/userlogin", formData)
+        .then(response => {
+            console.log('Login successful:', response.data);
 
-// Debugging logs
-// const tokenCookie = document.cookie.split(';').find(cookie => cookie.trim().startsWith('token='));
-// const tokenFromCookie = tokenCookie ? tokenCookie.split('=')[1] : null;
-
-// console.log('Token from Cookie:', tokenFromCookie);
-// console.log('Response Token:', response.data.token);
-// console.log('Token Match:', tokenFromCookie === response.data.token);
-
-      setIsLoggedIn(true);
-      navigate('/home'); // Redirect to the messages after successful login
-    } catch (error) {
-      console.error('Error logging in:', error);
-      toast.error('Error logging in. Please try again later.');
-      setIsLoading(false); // Reset loading state
-    }
-  };
+            document.cookie = `token=${response.data.token}`
+            localStorage.setItem("chat-user", JSON.stringify(response));
+            console.log(response);
+            setAuthUser(response);
+            toast.success('LogIn Successful');
+            setIsLoggedIn(true);
+            
+            navigate('/home'); // Redirect to the messages after successful login
+        })
+        .catch(error => {
+            console.error('Error logging in:', error);
+            toast.error('Error logging in. Please try again later.');
+        });
+  }
   
 
 

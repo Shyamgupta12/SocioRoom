@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { useAuthContext } from "../context/AuthContext";
 
 const ProfilePage = () => {
+  const { authUser } = useAuthContext();
   const [user, setUser] = useState({
-    name: 'John Doe',
-    email: 'johndoe@example.com',
+    name: authUser.data.loginUser.username,
+    email: authUser.data.loginUser.email,
     bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    profileImage: 'https://via.placeholder.com/150', // Placeholder image URL
+    profileImage: authUser.data.loginUser.email, // Placeholder image URL
     // Add more fields as needed
   });
 
@@ -45,7 +47,7 @@ const ProfilePage = () => {
     <div className="min-h-screen bg-gray-100 flex justify-center items-center">
       <div className="max-w-md w-full bg-white p-8 rounded-md shadow-md">
         <div className="text-center mb-4">
-          <img src={tempUser.profileImage} alt="Profile" className="rounded-full w-30 h-21 mx-auto mb-2" />
+          <img src={authUser.data.loginUser.image} alt="Profile" className="rounded-full w-30 h-21 mx-auto mb-2" />
           <div>
             <label htmlFor="profileImage" className="cursor-pointer text-blue-500 underline">
               Change Profile Image

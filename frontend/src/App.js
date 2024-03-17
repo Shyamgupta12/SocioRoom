@@ -1,9 +1,8 @@
-import { BrowserRouter as Router, Route, Routes, redirect ,Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, redirect ,Switch, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
-// import Search from './components/Search'
 import { useState, useEffect } from 'react';
 import PrivateRoute from './components/PrivateRoute';
 import Chat from './messages/Chat';
@@ -16,14 +15,16 @@ import { themeSettings } from "./theme";
 import LoggedHome from './components/LoggedHome';
 import Search from './components/Search';
 import MyPosts from  './Pages/MyPosts'
+import './index.css';
+import { useAuthContext } from './context/AuthContext';
 
 
 export default function App() {
 // theme seeting dark or light
-const mode = useSelector((state) => state.mode);
-const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-const isAuth = Boolean(useSelector((state) => state.token));
-
+// const mode = useSelector((state) => state.mode);
+// const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+// const isAuth = Boolean(useSelector((state) => state.token));
+const { authUser } = useAuthContext();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user,setUser]=useState({})
   console.log(user)
@@ -58,7 +59,7 @@ const isAuth = Boolean(useSelector((state) => state.token));
     <Router>
         {/* <Switch> */}
       <div  className='w-screen min-h-screen  flex flex-col font-inte '>   
-      <ThemeProvider theme={theme}>
+      {/* <ThemeProvider theme={theme}> */}
         <CssBaseline/>
         <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}  user={user} setUser={setUser}/>
         <Routes>
@@ -74,11 +75,11 @@ const isAuth = Boolean(useSelector((state) => state.token));
           } />
           <Route
             path="/login"  
-            element={<Login setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
+            element={<Login element={authUser ? <Navigate to='/' />: <Login />} setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
           <Route
             path="/signup"  
-            element={<Signup setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
+            element={<Signup element={authUser ? <Navigate to='/' />: <Signup />} setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
              <Route
             path="/myposts"  
@@ -90,7 +91,7 @@ const isAuth = Boolean(useSelector((state) => state.token));
           />
             <Route
             path="/messages"  
-            element={<Chat setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
+            element={<Chat element={authUser ? <Navigate to='/' />: <Login />} setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
             <Route
             path="/myprofile"  
@@ -104,7 +105,7 @@ const isAuth = Boolean(useSelector((state) => state.token));
           
 
         </Routes>
-      </ThemeProvider>
+      {/* </ThemeProvider> */}
         
       </div>
       {/* </Switch> */}

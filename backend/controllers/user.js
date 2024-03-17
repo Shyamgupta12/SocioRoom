@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const OTP = require("../models/otp");
 const otpGenerator = require("otp-generator");
 const mailSender = require("../utils/mailSender");
-const generateTokenAndSetCookie = require("../utils/generatetoken");
+// const generateTokenAndSetCookie = require("../utils/generatetoken");
 
 require("dotenv").config();
 
@@ -169,15 +169,23 @@ exports.usersignup = async(req, res) => {
 exports.userlogin = async (req, res) => {
     try {
         const { email, password } = req.body;
+        console.log("login data",req.body);
 
-        if (!email || !password) {
+        if (!email) {
             return res.status(400).json({
-                success: false,
-                message: "Please fill out both email and password."
-            });
+                success:false,
+                message:"Please fill out your Email."
+            })
+        }
+        if (!password) {
+            return res.status(400).json({
+                success:false,
+                message:"Please fill out your Password."
+            })
         }
 
-        const loginUser = await User.findOne({ email: email });
+        const loginUser = await User.findOne({email:email}).populate().exec();
+        console.log(loginUser);
 
         if (!loginUser) {
             return res.status(400).json({
@@ -186,57 +194,73 @@ exports.userlogin = async (req, res) => {
             });
         }
 
-        const passwordMatch = await bcrypt.compare(password, loginUser.password);
+        else {
+            const passwordMatch = await bcrypt.compare(password, loginUser.password);
 
-        if (passwordMatch) {
-            const token = generateTokenAndSetCookie(loginUser._id, res);
+            if (passwordMatch) {
+                //generate JWT, after password matching
+                const payload = {
+                    email: loginUser.email,
+                    id: loginUser._id,
+                }
+                const token = jwt.sign(payload, process.env.JWT_SECRET, {
+                    expiresIn:"2h",
+                });
+                loginUser.token = token;
+                loginUser.password = undefined;
+                
+                const options = {
+                    expires: new Date(Date.now() + 3*24*60*60*1000),
+                    httpOnly:true,
+                }
 
-            // Send token in response
-            res.status(200).json({
-                success: true,
-                token: token,
-                message: "User Logged In Successfully."
-            });
-        } else {
-            return res.status(400).json({
-                success: false,
-                message: "Wrong Password."
-            });
+                res.cookie("token", token, options).status(200).json({
+                    success:true,
+                    token,
+                    loginUser,
+                    message:"User Logged In Successfully."
+                })
+            }
+            else {
+                return res.status(400).json({
+                    success:false,
+                    message:"Wrong Password."
+                }) 
+            }
         }
-    } catch (err) {
+    } catch(err) {
         console.error(err);
-        res.status(500).json({
-            success: false,
-            message: "User cannot be logged in. Please try again later."
-        });
+        console.log(err);
+        res.status(500).json(
+            {
+                success: false,
+                message: "User cannot be logged in, Please try again later",
+            }
+        )
     }
 };
 
-exports.generateTokenAndSetCookie = (userId, res) => {
-    const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-        expiresIn: "15d",
-    });
+// exports.generateTokenAndSetCookie = (userId, res) => {
+//     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+//         expiresIn: "15d",
+//     });
 
-    res.cookie("jwt", token, {
-        maxAge: 15 * 24 * 60 * 60 * 1000, // MS
-        httpOnly: true, // prevent XSS attacks cross-site scripting attacks
-        sameSite: "strict", // CSRF attacks cross-site request forgery attacks
-        secure: process.env.NODE_ENV !== "development",
-    });
+//     res.cookie("jwt", token, {
+//         maxAge: 15 * 24 * 60 * 60 * 1000, // MS
+//         httpOnly: true, // prevent XSS attacks cross-site scripting attacks
+//         sameSite: "strict", // CSRF attacks cross-site request forgery attacks
+//         secure: process.env.NODE_ENV !== "development",
+//     });
 
-    return token; // Return the token for sending it in the response
-};
+//     return token; // Return the token for sending it in the response
+// };
 
 
 exports.logout = (req, res) => {
-    console.log("logout")
 	try {
-		// Clear the JWT cookie by setting its maxAge to 0
-		res.clearCookie("token");
-		// Respond with a 200 status code and a success message
+		res.cookie("jwt", "", { maxAge: 0 });
 		res.status(200).json({ message: "Logged out successfully" });
 	} catch (error) {
-		// If an error occurs, log it and send a 500 status code with an error message
 		console.log("Error in logout controller", error.message);
 		res.status(500).json({ error: "Internal Server Error" });
 	}

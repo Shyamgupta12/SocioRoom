@@ -1,6 +1,6 @@
 const Conversation = require("../models/Conversations.js");
 const Message = require("../models/Messages.js");
-const { getReceiverSocketId, io } = require("../socket/socket.io");
+const { getReceiverSocketId, io } = require("../socket/socket.js");
 
 exports.sendMessage = async (req, res) => {
     try {
@@ -41,12 +41,10 @@ exports.sendMessage = async (req, res) => {
       // Save both conversation and newMessage in parallel
       await Promise.all([conversation.save(), newMessage.save()]);
   
-      // // SOCKET IO FUNCTIONALITY WILL GO HERE
-      // const receiverSocketId = getReceiverSocketId(receiverId);
-      // if (receiverSocketId) {
-      //   // io.to(<socket_id>).emit() used to send events to a specific client
-      //   io.to(receiverSocketId).emit("newMessage", newMessage);
-      // }
+      const receiverSocketId = getReceiverSocketId(receiverId);
+      if (receiverSocketId) {
+         io.to(receiverSocketId).emit("newMessage", newMessage) // used to send events to a specific client
+      }
   
       res.status(201).json(newMessage);
     } catch (error) {

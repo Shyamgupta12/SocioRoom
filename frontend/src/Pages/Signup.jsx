@@ -8,6 +8,7 @@ import { useState} from 'react'
 import { toast } from 'react-toastify'
 import { useNavigate,Link} from 'react-router-dom'
 import axios from 'axios';
+import { useAuthContext } from '../context/AuthContext'
 
 
 
@@ -31,7 +32,7 @@ const Signup = ({setIsLoggedIn}) => {
 
  const[showPassword , setShowPassword] = useState(false);
  const[showConfirmPassword , setshowConfirmPassword] = useState(false);
-
+ const {authUser,setAuthUser} = useAuthContext();
 
  function changeHandler(event){
 
@@ -47,29 +48,29 @@ const Signup = ({setIsLoggedIn}) => {
 
 }
 
-function submitHandler(event){
-   event.preventDefault();
-   if(formData.password !== formData.confirmpassword){
-    toast.error('Passwords do not match');
-    return;
-   }
-   setIsLoggedIn(true);
-   toast.success("Account Created");
-   const accountData = {
-    ...formData
-   };
+// function submitHandler(event){
+//    event.preventDefault();
+//    if(formData.password !== formData.confirmpassword){
+//     toast.error('Passwords do not match');
+//     return;
+//    }
+//    setIsLoggedIn(true);
+//    toast.success("Account Created");
+//    const accountData = {
+//     ...formData
+//    };
 
-   const finalData = {
-    ...accountData,
+//    const finalData = {
+//     ...accountData,
      
-   }
+//    }
 
-   console.log("Printing Final account Data");
-   console.log(finalData);
+//    console.log("Printing Final account Data");
+//    console.log(finalData);
 
-  //  NAVIGATE TO DASHBOARD 
-  navigate("/"); 
-}
+//   //  NAVIGATE TO DASHBOARD 
+//   navigate("/"); 
+// }
 
 function submitHandler(event) {
     event.preventDefault();
@@ -88,6 +89,8 @@ function submitHandler(event) {
         setIsLoggedIn(true);
         toast.success('Account Created');
         navigate('/home');
+        localStorage.setItem("chat-user", JSON.stringify(response.data));
+			  setAuthUser(response.data);
       })
       .catch(error => {
         console.error('Error signing up:', error);
@@ -181,7 +184,7 @@ function submitHandler(event) {
               onChange={changeHandler}
               onFocus={handleFoucs}
               onBlur={handleBlur}
-              value={formData.userName}
+              value={formData.username}
             />
           </label>
           <label className='text-black-500 font-semibold'>

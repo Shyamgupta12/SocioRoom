@@ -5,6 +5,10 @@ import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact
 import { toast } from 'react-toastify';
 import { Link, NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Searchbar from './SearchBar';
+import useLogout from '../hooks/useLogout';
+import { BiLogOut } from "react-icons/bi";
+import { useAuthContext } from "../context/AuthContext";
 
 
 const StyledToolbar = styled(Toolbar)({
@@ -37,79 +41,98 @@ const UserBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const Navbar = ({ isLoggedIn, setIsLoggedIn}) => {
+const Navbar = ({ setUser, user, setFlag, flag, isLoggedIn, setIsLoggedIn }) => {
   // Frontend code
   const navigate = useNavigate();
+  const { authUser } = useAuthContext();
   const [open , setOpen] = useState(false);
   const [input, setInput] = useState("");
-   
-  const fetchData = (value) => {
-    fetch("http://localhost:3000/api/v1/getusernames")
-      .then((response) => response.json())
-      .then((json) => {
-          if (Array.isArray(json)) {
-              const results = json.filter((user) => {
-                  return value && user && user.usernames && user.usernames.toLowerCase().includes(value);
-              });
-              console.log(results);
-          } else {
-              console.error("JSON response is not an array.");
-          }
-      })
-      .catch((error) => {
-          console.error("Error fetching data:", error);
-      });
-}
+  const [navuser, setNavuser] = useState({});
+  const {loading ,logout} = useLogout();
 
-
-
-
-  const handleChange = (value) => {
-    setInput(value);
-    fetchData(value);
-  }
-
-
-  const Logout = async () => {
-    try {
-          const getCookie = (name) => {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-          }
-        
-        const token = getCookie('token');
-
-        const response = await fetch("http://localhost:3000/api/v1/logout", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorisation': `Bearer ${token}`,
-            },
-        });
-
-        console.log(response);
-
-        if (response.ok) {
-            // Clear token from local storage
-            // document.cookie=null;
-            document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-            console.log(document.cookie)
-            // Update login state
-            setIsLoggedIn(false);
-            // Notify the user
-            toast.success('Logout successful');
-           
-           navigate("/") // Redirect to the "/" after successful login
-        } else {
-            // If response is not ok, throw an error
-            throw new Error('Logout failed');
+  useEffect(() => {
+    const check = async () => {
+      try {
+        const loggedInUser = localStorage.getItem("user");
+        if (loggedInUser) {
+          const foundUser = JSON.parse(loggedInUser);
+          setNavuser(foundUser);
+          await setUser(foundUser);
         }
-    } catch (error) {
-        console.error('Logout error:', error);
-        toast.error('Logout failed');
-    }
-};
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    check();
+  }, [user?._id, flag]);
+
+//   const fetchData = (value) => {
+//     fetch("http://localhost:3000/api/v1/getusernames")
+//       .then((response) => response.json())
+//       .then((json) => {
+//           if (Array.isArray(json)) {
+//               const results = json.filter((user) => {
+//                   return value && user && user.usernames && user.usernames.toLowerCase().includes(value);
+//               });
+//               console.log(results);
+//           } else {
+//               console.error("JSON response is not an array.");
+//           }
+//       })
+//       .catch((error) => {
+//           console.error("Error fetching data:", error);
+//       });
+// }
+
+
+
+
+  // const handleChange = (value) => {
+  //   setInput(value);
+  //   fetchData(value);
+  // }
+
+
+//   const Logout = async () => {
+//     try {
+//           const getCookie = (name) => {
+//             const value = `; ${document.cookie}`;
+//             const parts = value.split(`; ${name}=`);
+//             if (parts.length === 2) return parts.pop().split(';').shift();
+//           }
+        
+//         const token = getCookie('token');
+
+//         const response = await fetch("http://localhost:3000/api/v1/logout", {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorisation': `Bearer ${token}`,
+//             },
+//         });
+
+//         console.log(response);
+
+//         if (response.ok) {
+//             // Clear token from local storage
+//             // document.cookie=null;
+//             document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+//             console.log(document.cookie)
+//             // Update login state
+//             setIsLoggedIn(false);
+//             // Notify the user
+//             toast.success('Logout successful');
+           
+//            navigate("/") // Redirect to the "/" after successful login
+//         } else {
+//             // If response is not ok, throw an error
+//             throw new Error('Logout failed');
+//         }
+//     } catch (error) {
+//         console.error('Logout error:', error);
+//         toast.error('Logout failed');
+//     }
+// };
 
 
   return (
@@ -142,7 +165,7 @@ export const Navbar = ({ isLoggedIn, setIsLoggedIn}) => {
 <StyledToolbar>
 <NavLink to={"/home"}><Typography variant='h6'  sx={{ display: { xs: "none", sm: "block" } }}>SOCIOROOM</Typography></NavLink>
   <ConnectWithoutContactIcon   sx={{ display: { xs: "block", sm: "none" } }} />
- <Search><InputBase placeholder='search...' value={input} onChange={(e) => {handleChange(e.target.value)}}/></Search>
+  <Searchbar />
  <Icons>
        <Badge badgeContent={4} color="error">
       <NavLink to={"/messages"}> <Mail /></NavLink>
@@ -151,10 +174,10 @@ export const Navbar = ({ isLoggedIn, setIsLoggedIn}) => {
        <Notifications />
      </Badge>
      <Avatar
-       sx={{ width: 30, height: 30 }}
-       src="https://images.pexels.com/photos/846741/pexels-photo-846741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-       onClick={(e) => setOpen(true)}
-     />
+        sx={{ width: 30, height: 30 }}
+        src={authUser.data.loginUser.image} // Remove the ${} and use the variable directly
+        onClick={(e) => setOpen(true)}
+      />
  </Icons>
  <UserBox onClick={(e) => setOpen(true)}>
    <Avatar
@@ -181,7 +204,7 @@ export const Navbar = ({ isLoggedIn, setIsLoggedIn}) => {
  > 
    <MenuItem>Profile</MenuItem>
    <MenuItem>My account</MenuItem>
-   <MenuItem onClick={Logout}>Logout</MenuItem>
+   <MenuItem onClick={logout}>Logout</MenuItem>
 </Menu>
 </AppBar>
 
