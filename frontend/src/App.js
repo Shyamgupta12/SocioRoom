@@ -15,6 +15,7 @@ import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
 import LoggedHome from './components/LoggedHome';
 import Search from './components/Search';
+import MyPosts from  './Pages/MyPosts'
 
 
 export default function App() {
@@ -79,6 +80,10 @@ const isAuth = Boolean(useSelector((state) => state.token));
             path="/signup"  
             element={<Signup setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
+             <Route
+            path="/myposts"  
+            element={<MyPosts setIsLoggedIn={setIsLoggedIn} />}
+          />
             <Route
             path="/search"  
             element={<Search setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
@@ -95,6 +100,9 @@ const isAuth = Boolean(useSelector((state) => state.token));
             path="/home"  
             element={<LoggedHome setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
+
+          
+
         </Routes>
       </ThemeProvider>
         

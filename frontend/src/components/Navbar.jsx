@@ -113,7 +113,7 @@ export const Navbar = ({ isLoggedIn, setIsLoggedIn}) => {
 
 
   return (
-    <div>
+    <div className='static'>
  {/* not logged nav bar */}
 {!isLoggedIn && 
   <header className='header flex '>

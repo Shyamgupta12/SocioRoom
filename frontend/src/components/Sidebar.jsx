@@ -3,6 +3,8 @@ import {
     Article,
     Group,
     Home,
+    Message,
+    Mail,
     ModeNight,
     Person,
     Settings,
@@ -18,7 +20,7 @@ import {
     Switch,
   } from "@mui/material";
   import React from "react";
-  
+  import {Link} from "react-router-dom"
   const Sidebar = ({mode,setMode}) => {
     return (
       <Box flex={1} p={2} sx={{ display: { xs: "none", sm: "block" } }}>
@@ -27,35 +29,34 @@ import {
             <ListItem disablePadding>
               <ListItemButton component="a" href="#home">
                 <ListItemIcon>
-                  <Home />
+                <Link to={"/home"}>  <Home /></Link>
                 </ListItemIcon>
                 <ListItemText primary="Homepage" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component="a" href="#simple-list">
+          <Link to={"/myposts"}>
+          <ListItem disablePadding>
+              <ListItemButton component="" href="#simple-list">
                 <ListItemIcon>
                   <Article />
                 </ListItemIcon>
                 <ListItemText primary="MyPosts" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
+          </Link>
+
+       <Link to={"/messages"}>
+       <ListItem disablePadding>
               <ListItemButton component="a" href="#simple-list">
                 <ListItemIcon>
-                  <Group />
+                  <Mail/>
                 </ListItemIcon>
-                <ListItemText primary="Groups" />
+                <ListItemText primary="Messages" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemIcon>
-                  <Storefront />
-                </ListItemIcon>
-                <ListItemText primary="Marketplace" />
-              </ListItemButton>
-            </ListItem>
+       </Link>
+
+            
             <ListItem disablePadding>
               <ListItemButton component="a" href="#simple-list">
                 <ListItemIcon>
@@ -65,19 +66,14 @@ import {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemIcon>
-                  <Settings />
-                </ListItemIcon>
-                <ListItemText primary="Settings" />
-              </ListItemButton>
+              
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton component="a" href="#simple-list">
                 <ListItemIcon>
                   <AccountBox />
                 </ListItemIcon>
-                <ListItemText primary="Profile" />
+              <Link to={"/myprofile"}> <ListItemText primary="Profile" /></Link>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>

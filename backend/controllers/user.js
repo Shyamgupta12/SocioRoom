@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const OTP = require("../models/otp");
 const otpGenerator = require("otp-generator");
 const mailSender = require("../utils/mailSender");
+const generateTokenAndSetCookie = require("../utils/generatetoken");
 
 require("dotenv").config();
 
@@ -165,80 +166,67 @@ exports.usersignup = async(req, res) => {
 }
 
 // user login route
-exports.userlogin = async(req, res) => {
+exports.userlogin = async (req, res) => {
     try {
-        const {email, password} = req.body;
-        console.log("login data",req.body);
-        
-        if (!email) {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
             return res.status(400).json({
-                success:false,
-                message:"Please fill out your Email."
-            })
-        }
-        if (!password) {
-            return res.status(400).json({
-                success:false,
-                message:"Please fill out your Password."
-            })
+                success: false,
+                message: "Please fill out both email and password."
+            });
         }
 
-        const loginUser = await User.findOne({email:email}).populate().exec();
-        console.log(loginUser);
-        
-        // if not a registered User
+        const loginUser = await User.findOne({ email: email });
+
         if (!loginUser) {
             return res.status(400).json({
                 success: false,
-                message: "Invalid email. Please check your credentials.",
+                message: "Invalid email. Please check your credentials."
             });
         }
-        else {
-            const passwordMatch = await bcrypt.compare(password, loginUser.password);
 
-            if (passwordMatch) {
-                //generate JWT, after password matching
-                const payload = {
-                    email: loginUser.email,
-                    id: loginUser._id,
-                }
-                const token = jwt.sign(payload, process.env.JWT_SECRET, {
-                    expiresIn:"2h",
-                });
-                loginUser.token = token;
-                loginUser.password = undefined;
-                
-                const options = {
-                    expires: new Date(Date.now() + 3*24*60*60*1000),
-                    httpOnly:true,
-                }
+        const passwordMatch = await bcrypt.compare(password, loginUser.password);
 
-                res.cookie("token", token, options).status(200).json({
-                    success:true,
-                    token,
-                    // User,
-                    message:"User Logged In Successfully."
-                })
-            }
-            else {
-                return res.status(400).json({
-                    success:false,
-                    message:"Wrong Password."
-                }) 
-            }
-        }
-    }
-    catch(err) {
-        console.error(err);
-        console.log(err);
-        res.status(500).json(
-            {
+        if (passwordMatch) {
+            const token = generateTokenAndSetCookie(loginUser._id, res);
+
+            // Send token in response
+            res.status(200).json({
+                success: true,
+                token: token,
+                message: "User Logged In Successfully."
+            });
+        } else {
+            return res.status(400).json({
                 success: false,
-                message: "User cannot be logged in, Please try again later",
-            }
-        )
+                message: "Wrong Password."
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: "User cannot be logged in. Please try again later."
+        });
     }
-}
+};
+
+exports.generateTokenAndSetCookie = (userId, res) => {
+    const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+        expiresIn: "15d",
+    });
+
+    res.cookie("jwt", token, {
+        maxAge: 15 * 24 * 60 * 60 * 1000, // MS
+        httpOnly: true, // prevent XSS attacks cross-site scripting attacks
+        sameSite: "strict", // CSRF attacks cross-site request forgery attacks
+        secure: process.env.NODE_ENV !== "development",
+    });
+
+    return token; // Return the token for sending it in the response
+};
+
 
 exports.logout = (req, res) => {
     console.log("logout")

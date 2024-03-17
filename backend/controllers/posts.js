@@ -63,3 +63,15 @@ exports.likePost = async (req, res) => {
     }
 }
 
+exports.getuserpost = async (req,res) => {
+    try {
+        const currentUser = req.user._id;
+        const userPosts = await Post.find({ userId: currentUser._id });
+
+        res.status(200).json(userPosts);
+  } 
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
