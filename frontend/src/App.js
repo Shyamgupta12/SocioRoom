@@ -100,6 +100,7 @@ const isAuth = Boolean(useSelector((state) => state.token));
             path="/home"  
             element={<LoggedHome setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
+          
 
           
 

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon } from 'mdb-react-ui-kit';
+import "./MyProfile.css"
 
 const ProfilePage = () => {
   const [user, setUser] = useState({
@@ -42,81 +44,53 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center">
-      <div className="max-w-md w-full bg-white p-8 rounded-md shadow-md">
-        <div className="text-center mb-4">
-          <img src={tempUser.profileImage} alt="Profile" className="rounded-full w-30 h-21 mx-auto mb-2" />
+    <div className='flex justify-center mt-28'>
+    <div className='w-9/12'>
+    <MDBCard className="mb-3" style={{ borderRadius: '.5rem' }}>
+  <MDBCardBody className="p-4">
+    <MDBRow className="g-0">
+      <MDBCol md="4" className="gradient-custom text-center text-white"
+        style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
+        <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+          alt="Avatar" className="my-5" style={{ width: '80px' }} fluid />
+        <MDBTypography tag="h5">Marie Horwitz</MDBTypography>
+        <MDBCardText>Web Designer</MDBCardText>
+        <MDBIcon far icon="edit mb-5" />
+      </MDBCol>
+      <MDBCol md="8">
+        <div className="d-flex flex-column h-100">
           <div>
-            <label htmlFor="profileImage" className="cursor-pointer text-blue-500 underline">
-              Change Profile Image
-            </label>
-            <input
-              type="file"
-              id="profileImage"
-              className="hidden"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
+            <MDBTypography tag="h6">Information</MDBTypography>
+            <hr className="mt-0 mb-4" />
+            <MDBRow className="pt-1">
+              <MDBCol size="6" className="mb-3">
+                <MDBTypography tag="h6">Email</MDBTypography>
+                <MDBCardText className="text-muted">info@example.com</MDBCardText>
+              </MDBCol>
+              <MDBCol size="6" className="mb-3">
+                <MDBTypography tag="h6">Phone</MDBTypography>
+                <MDBCardText className="text-muted">123 456 789</MDBCardText>
+              </MDBCol>
+            </MDBRow>
+          </div>
+          <div className="mt-auto">
+            <MDBTypography tag="h6">Social Media</MDBTypography>
+            <hr className="mt-0 mb-4" />
+            <div className="d-flex justify-content-start">
+              <a href="#!"><MDBIcon fab icon="facebook me-3" size="lg" /></a>
+              <a href="#!"><MDBIcon fab icon="twitter me-3" size="lg" /></a>
+              <a href="#!"><MDBIcon fab icon="instagram me-3" size="lg" /></a>
+            </div>
           </div>
         </div>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-              Name:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="text"
-              name="name"
-              id="name"
-              value={tempUser.name}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-              Email:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="email"
-              name="email"
-              id="email"
-              value={tempUser.email}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="bio">
-              Bio:
-            </label>
-            <textarea
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              name="bio"
-              id="bio"
-              value={tempUser.bio}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex justify-between">
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              onClick={handleCancel}
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+      </MDBCol>
+    </MDBRow>
+  </MDBCardBody>
+</MDBCard>
+</div>
+</div>
+  )
+   
 };
 
 export default ProfilePage;
