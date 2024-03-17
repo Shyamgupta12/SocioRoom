@@ -135,7 +135,7 @@ const Add = ({ onPostAdded }) => {
         }}
       >
         <Fab color="primary" aria-label="add">
-          <AddIcon />
+          <AddIcon color='inherit'/>
         </Fab>
       </Tooltip>
       <SytledModal

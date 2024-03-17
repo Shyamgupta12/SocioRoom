@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon } from 'mdb-react-ui-kit';
-import "./MyProfile.css"
+import { useAuthContext } from "../context/AuthContext";
+import { MDBTypography, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardText, MDBIcon } from 'mdbreact'; // Import MDBReact components
 
 const ProfilePage = () => {
+  const { authUser } = useAuthContext();
   const [user, setUser] = useState({
-    name: 'John Doe',
-    email: 'johndoe@example.com',
+    name: authUser.data.loginUser.username,
+    email: authUser.data.loginUser.email,
     bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    profileImage: 'https://via.placeholder.com/150', // Placeholder image URL
+    profileImage: authUser.data.loginUser.image, // Use correct image data
     // Add more fields as needed
   });
 
@@ -44,53 +45,34 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className='flex justify-center mt-28'>
-    <div className='w-9/12'>
-    <MDBCard className="mb-3" style={{ borderRadius: '.5rem' }}>
-  <MDBCardBody className="p-4">
-    <MDBRow className="g-0">
-      <MDBCol md="4" className="gradient-custom text-center text-white"
-        style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
-        <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-          alt="Avatar" className="my-5" style={{ width: '80px' }} fluid />
-        <MDBTypography tag="h5">Marie Horwitz</MDBTypography>
-        <MDBCardText>Web Designer</MDBCardText>
-        <MDBIcon far icon="edit mb-5" />
-      </MDBCol>
-      <MDBCol md="8">
-        <div className="d-flex flex-column h-100">
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center">
+      <div className="max-w-md w-full bg-white p-8 rounded-md shadow-md">
+        <div className="text-center mb-4">
+          <img src={user.profileImage} alt="Profile" className="rounded-full w-30 h-21 mx-auto mb-2" />
           <div>
             <MDBTypography tag="h6">Information</MDBTypography>
             <hr className="mt-0 mb-4" />
             <MDBRow className="pt-1">
               <MDBCol size="6" className="mb-3">
                 <MDBTypography tag="h6">Email</MDBTypography>
-                <MDBCardText className="text-muted">info@example.com</MDBCardText>
+                <MDBCardText className="text-muted">{user.email}</MDBCardText>
               </MDBCol>
-              <MDBCol size="6" className="mb-3">
-                <MDBTypography tag="h6">Phone</MDBTypography>
-                <MDBCardText className="text-muted">123 456 789</MDBCardText>
-              </MDBCol>
+              {/* Add more profile information fields here */}
             </MDBRow>
           </div>
           <div className="mt-auto">
             <MDBTypography tag="h6">Social Media</MDBTypography>
             <hr className="mt-0 mb-4" />
             <div className="d-flex justify-content-start">
-              <a href="#!"><MDBIcon fab icon="facebook me-3" size="lg" /></a>
-              <a href="#!"><MDBIcon fab icon="twitter me-3" size="lg" /></a>
-              <a href="#!"><MDBIcon fab icon="instagram me-3" size="lg" /></a>
+              <a href="#!"><MDBIcon fab icon="facebook" size="lg" /></a>
+              <a href="#!"><MDBIcon fab icon="twitter" size="lg" /></a>
+              <a href="#!"><MDBIcon fab icon="instagram" size="lg" /></a>
             </div>
           </div>
         </div>
-      </MDBCol>
-    </MDBRow>
-  </MDBCardBody>
-</MDBCard>
-</div>
-</div>
-  )
-   
+      </div>
+    </div>
+  );
 };
 
 export default ProfilePage;

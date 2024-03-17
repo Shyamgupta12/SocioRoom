@@ -1,12 +1,14 @@
 const express = require("express");
 const {userController} = require("./controllers/user");
+const { app, server } = require("./socket/socket");
+const auth = require('./middlewares/Auth');
 
 // connect DB
 const dbConnect = require("./database/connection");
-const auth = require("./middlewares/Auth");
+// const auth = require("./middlewares/Auth");
 
 const bodyParser = require('body-parser');
-const app = express();
+// const app = express();
 const port = process.env.PORT || 3000;
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -34,7 +36,7 @@ app.use(bodyParser.json());
 
 app.use("/api/v1", router);
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
 
