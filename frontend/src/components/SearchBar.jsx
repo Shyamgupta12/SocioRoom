@@ -1,55 +1,74 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useHistory from react-router-dom
 import { FaSearch } from 'react-icons/fa';
 
 const Searchbar = () => {
     const [input, setInput] = useState("");
     const [usernames, setUsernames] = useState([]);
-    const [showList, setShowList] = useState(false); // State to control when to show the list
+    const [showList, setShowList] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchData();
-    }, []); // Fetch data when the component mounts
+    }, []);
 
     const fetchData = async () => {
         try {
-            const response = await fetch(`/api/v1/getusernames`); // Fetch data from the API
+            const response = await fetch(`/api/v1/getusernames`);
             const data = await response.json();
-            setUsernames(data.usernames); // Update the usernames state
+            setUsernames(data.usernames);
         } catch (error) {
             console.error('Error fetching usernames:', error);
         }
     }
 
+    const handleButtonClick = (username) => {
+        // Redirect to the profile page of the clicked user
+        navigate(`/profile/${username}`);
+        setShowList(false);
+    };
+
     const handleChange = (value) => {
-        setInput(value); // Update the input state
-        setShowList(value.trim() !== ''); // Show the list only if there's input
+        setInput(value);
+        setShowList(value.trim() !== '');
     }
 
-    // Filter usernames based on input value
-    // const filteredUsernames = usernames.filter(username =>
-    //     username.toLowerCase().includes(input.toLowerCase())
-    // );
+    const filteredUsernames = usernames.filter(username =>
+        username.toLowerCase().includes(input.toLowerCase())
+    );
 
     return (
         <div className='input-wrapper'>
-            {/* <FaSearch id="search-icon" /> */}
             <input
-            className="input input-bordered input-accent w-full max-w-xs"
-                placeholder='Type to search ...'
+                className="input input-bordered input-accent max-w-xl h-6 w-11/12" 
+                placeholder='Type to search users...'
                 value={input}
                 onChange={(e) => handleChange(e.target.value)}
             />
-            {/* Render the list of filtered usernames if input is not empty */}
-            {/* {showList && (
-                <ul>
+            {showList && (
+                <ul style={{ 
+                    position: 'absolute', 
+                    top: '100%', 
+                    left: '50%', 
+                    transform: 'translateX(-50%)', 
+                    width: '100%', 
+                    backgroundColor: 'gray', 
+                    border: '1px solid #ccc', 
+                    borderRadius: '4px', 
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                    padding: '0', // Remove default padding
+                    display: 'flex', // Use flexbox for alignment
+                    justifyContent: 'center', // Center align horizontally
+                    alignItems: 'center', // Center align vertically
+                    flexDirection: 'column' // Align items in a column
+                }}>
                     {filteredUsernames.map((username, index) => (
-                        <li key={index}>{username}</li>
+                        <button key={index} style={{ display: 'block',textAlign: 'center', margin: '5px 10px', padding: '5px 10px', backgroundColor: 'black', borderRadius: '4px' }} onClick={() => handleButtonClick(username)}>{username}</button>
                     ))}
                 </ul>
-            )} */}
+            )}
         </div>
     );
 }
 
 export default Searchbar;
-{/* <input type="text" placeholder="Type here" className="input input-bordered input-accent w-full max-w-xs" /> */}

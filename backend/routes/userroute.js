@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const auth = require("../middlewares/Auth");
 
-const {usersignup, userlogin, sendOTP, logout, user} = require('../controllers/user');
+const {usersignup, userlogin, sendOTP, logout, user, getprofile} = require('../controllers/user');
 const {resetPasswordToken, resetPassword} = require("../controllers/ResetPassword");
 const {updateProfile, deleteProfile, follow, unfollow} = require("../controllers/updateProfile");
-const {Post, updatePost, deletePost, likePost, feed} = require("../controllers/posts");
-const {Conversation , getConversation, message, messageId, getusers} = require("../controllers/Conversation");
+const {Post, updatePost, deletePost, likePost, feed, getuserpost} = require("../controllers/posts");
+// const {userprofile} = require("../controllers/user");
+// const {Conversation , getConversation, message, messageId, getusers} = require("../controllers/Conversation");
 const {sendMessage, getMessages} = require("../controllers/chat");
 const {chatusers} = require("../controllers/chatusers");
 const {getusernames} = require("../controllers/user");
@@ -41,5 +42,8 @@ router.get('/user', user);
 // router.get('/getuserpost', auth ,getuserpost);
 router.get('/user/:id', user);
 router.get('/feed' , auth, feed);
+router.get('/getuserpost', auth ,getuserpost);
+router.get('/profile/:username', auth, getprofile);
+// router.get('/userprofile/:username', auth, userprofile);
 
 module.exports = router;

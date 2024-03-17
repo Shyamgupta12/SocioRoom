@@ -66,6 +66,11 @@ const Navbar = ({ setUser, user, setFlag, flag, isLoggedIn, setIsLoggedIn }) => 
     check();
   }, [user?._id, flag]);
 
+    // Check if authUser exists before accessing its properties
+    if (!authUser) {
+        return null; // or return a loading indicator or redirect to login
+    }
+
 //   const fetchData = (value) => {
 //     fetch("http://localhost:3000/api/v1/getusernames")
 //       .then((response) => response.json())
@@ -167,7 +172,7 @@ const Navbar = ({ setUser, user, setFlag, flag, isLoggedIn, setIsLoggedIn }) => 
   <ConnectWithoutContactIcon   sx={{ display: { xs: "block", sm: "none" } }} />
   <Searchbar />
  <Icons>
-       <Badge badgeContent={4} color="error">
+       <Badge badgeContent={authUser.data.loginUser.followings.length} color="error">
       <NavLink to={"/messages"}> <Mail /></NavLink>
      </Badge>
      <Badge badgeContent={2} color="error">

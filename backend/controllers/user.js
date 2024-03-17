@@ -368,3 +368,16 @@ exports.user = async (req, res) => {
     }
 };
 
+exports.getprofile = async (req,res) => {
+    try {
+        const username = req.params.username;
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        return res.json(user);
+    } catch (error) {
+        console.error('Error retrieving user profile', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
