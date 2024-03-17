@@ -1,8 +1,16 @@
 
-# Socioroom
+# AVISHKAR 2024
+## Project Name : SocioRoom (Social Networking site)
 
 
 Socioroom is a social media website where users can connect with others, engage in real-time chat with people they are following, and share content. It features a unique 3D login and signup interface along with a 3D homepage for seamless navigation to the login and signup forms.
+
+
+## Authors
+
+- Suraj Nayak [@SurajMnnit](https://github.com/SurajMnnit)
+- Shyam Gupta[@Shyamgupta12](https://github.com/Shyamgupta12)
+- Anmol Sahu [@anmol-284](https://github.com/anmol-284)
 
 
 ## Features
@@ -25,7 +33,7 @@ To run Socioroom locally, follow these steps:
 ```
 
 ```bash
-  cd socioroom
+  cd RocioRoom
 ```
 ```bash
   cd frontend 
@@ -40,7 +48,7 @@ To run Socioroom locally, follow these steps:
 ```
 ## Usage/Examples
 
-- Once Socioroom is up and running, users can:
+- Once SocioRoom is up and running, users can:
 
 - Navigate through the 3D homepage to access the login and signup forms.
 - Register for an account or log in using existing credentials.
@@ -48,16 +56,4 @@ To run Socioroom locally, follow these steps:
 - Search for other users and connect with them.
 - Engage in real-time chat with people they are following.
 - Share images and other content with their followers.
-
-
-## Contributing
-
-
-Contributions to Socioroom are welcome! To contribute:
-
-- Fork the repository.
-- Create a new branch (git checkout -b feature/my-feature).
-- Make your changes and commit them (git commit -am 'Add new feature').
-- Push to the branch (git push origin feature/my-feature).
-- Create a new Pull Request.
 
