@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 
+  // changes  start----
+  const {ObjectId} = mongoose.Schema.Types
+  // changes endd------
+
 const userSchema = new mongoose.Schema(
     {
         firstname: {
@@ -60,13 +64,17 @@ const userSchema = new mongoose.Schema(
             type:Boolean,
             default:false
         },
-        followers: {
-            type: Array,
-            default: [],
-          },
-          followings: {
-            type: Array,
-            default: [],
+        followers: [{
+            type: ObjectId,
+           ref:"USER"
+          }],
+        //   followings: {
+        //     type: Array,
+        //     default: [],
+        //   },
+        followings: {
+            type: ObjectId,
+            ref:"USER"
           },
           hobbies: {
             type: Array,
