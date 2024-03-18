@@ -148,7 +148,7 @@ if(!authUser){
   return (
     <div className='static'>
  {/* not logged nav bar */}
-{!isLoggedIn && 
+{/* {!isLoggedIn && 
   <header className='header flex '>
         <NavLink to="/" className="w-40 h-10 rounded-lg bg-white items-center 
         justify-center flex font-bold shadow-md">
@@ -165,11 +165,11 @@ if(!authUser){
             </NavLink>
         </nav>
    </header>
-          }
+          } */}
 
 
  {/* logged in navbar */}
-    { isLoggedIn && 
+    { authUser && 
 
 <AppBar position='sticky' sx={{ backgroundColor: 'black' }}>
 <StyledToolbar>
