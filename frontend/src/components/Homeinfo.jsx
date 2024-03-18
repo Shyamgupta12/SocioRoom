@@ -25,13 +25,13 @@ const renderContent ={
     2 : (
         <InfoBox 
         text="Let's get social! "
-        link="/Signup"
+        link="/signup"
         btnText="Sign  " />
     ),
     3 : (
         <InfoBox 
         text="Ready to jump back in?"
-        link="/Signup"
+        link="/login"
         btnText="LOGIN " />
     ),
 

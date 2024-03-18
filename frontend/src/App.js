@@ -18,6 +18,8 @@ import MyPosts from  './Pages/MyPosts'
 import './index.css';
 import { useAuthContext } from './context/AuthContext';
 import UserProfile from "./Pages/UserProfile";
+import Follower from './Pages/Follower';
+import Following from './Pages/Following';
 
 
 export default function App() {
@@ -97,6 +99,14 @@ const { authUser } = useAuthContext();
             <Route exact
             path="/myprofile"  
             element={<MyProfile setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
+          />
+            <Route
+            path="/follower"  
+            element={<Follower setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
+          />
+           <Route
+            path="/following"  
+            element={<Following setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
            <Route
             path="/home"  

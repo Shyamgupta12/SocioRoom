@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 
+  // changes  start----
+  const {ObjectId} = mongoose.Schema.Types
+  // changes endd------
+
 const PostSchema = new mongoose.Schema(
   {
     userId: {

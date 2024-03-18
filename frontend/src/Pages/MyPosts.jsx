@@ -29,7 +29,8 @@ const MyPosts = () => {
   }, []);
 
   return (
-    <Box flex={4} p={{ xs: 0, md: 2 }}>
+    <div className="h-[20px]">
+       <Box flex={4} p={{ xs: 0, md: 2 }} >
       {loading ? (
         <Stack spacing={1}>
           <Skeleton variant="text" height={100} />
@@ -40,7 +41,7 @@ const MyPosts = () => {
       ) : (
         <>
           {posts.map((post) => (
-            <Vcard
+            <Vcard 
               caption={post.caption}
               image={post.image}
               likes={post.likes.length}
@@ -50,6 +51,7 @@ const MyPosts = () => {
         </>
       )}
     </Box>
+    </div>
   );
 };
 

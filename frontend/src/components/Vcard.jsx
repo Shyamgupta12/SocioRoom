@@ -17,6 +17,7 @@ const Vcard = ({ caption, image, likes }) => {
   // const [userData, setUserData] = useState(null);
   const { authUser } = useAuthContext();
 
+  console.log({image});
   // useEffect(() => {
   //   const fetchUserData = async () => {
   //     try {
@@ -37,7 +38,8 @@ const Vcard = ({ caption, image, likes }) => {
   // }, []);
 
   return (
-    <Card sx={{ margin: 5 }}>
+    <div style={{ margin:'150px',display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+         <Card sx={{  width:400}}>
       <CardHeader
         avatar={
           authUser.data.loginUser ? (
@@ -59,12 +61,12 @@ const Vcard = ({ caption, image, likes }) => {
       />
       {image && <CardMedia
         component="img"
-        height="20%"
-        src={`http://localhost:3000/images/file_1710607153422.jpg`}
+        height="200px"
+        src={image}
         alt="image"
       />}
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
+      <CardContent sx={{height:100, overflow:'auto'}}>
+        <Typography variant="body2" color="text.secondary " fontWeight='bold'>
           {caption}
         </Typography>
       </CardContent>
@@ -73,11 +75,13 @@ const Vcard = ({ caption, image, likes }) => {
           {likes}
           <FavoriteBorder />
         </IconButton>
-        <IconButton aria-label="share">
+        {/* <IconButton aria-label="share">
           <Share />
-        </IconButton>
+        </IconButton> */}
       </CardActions>
     </Card>
+    </div>
+   
   );
 };
 

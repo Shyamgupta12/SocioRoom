@@ -74,31 +74,10 @@ const Navbar = ({ setUser, user, setFlag, flag, isLoggedIn, setIsLoggedIn }) => 
         return null; // or return a loading indicator or redirect to login
     }
 
-//   const fetchData = (value) => {
-//     fetch("http://localhost:3000/api/v1/getusernames")
-//       .then((response) => response.json())
-//       .then((json) => {
-//           if (Array.isArray(json)) {
-//               const results = json.filter((user) => {
-//                   return value && user && user.usernames && user.usernames.toLowerCase().includes(value);
-//               });
-//               console.log(results);
-//           } else {
-//               console.error("JSON response is not an array.");
-//           }
-//       })
-//       .catch((error) => {
-//           console.error("Error fetching data:", error);
-//       });
-// }
 
 
 
 
-  // const handleChange = (value) => {
-  //   setInput(value);
-  //   fetchData(value);
-  // }
 
 
 //   const Logout = async () => {
@@ -117,55 +96,14 @@ const Navbar = ({ setUser, user, setFlag, flag, isLoggedIn, setIsLoggedIn }) => 
     //             'Content-Type': 'application/json',
     //             'Authorisation': `Bearer ${token}`,
     //         },
-    //     });
 
-    //     console.log(response);
-
-//         if (response.ok) {
-//             // Clear token from local storage
-//             // document.cookie=null;
-//             document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-//             console.log(document.cookie)
-//             // Update login state
-//             setIsLoggedIn(false);
-//             // Notify the user
-//             toast.success('Logout successful');
-           
-//            navigate("/") // Redirect to the "/" after successful login
-//         } else {
-//             // If response is not ok, throw an error
-//             throw new Error('Logout failed');
-//         }
-//     } catch (error) {
-//         console.error('Logout error:', error);
-//         toast.error('Logout failed');
-//     }
-// };
 
 if(!authUser){
   return null;
 }
   return (
-    <div className='static'>
- {/* not logged nav bar */}
-{/* {!isLoggedIn && 
-  <header className='header flex '>
-        <NavLink to="/" className="w-40 h-10 rounded-lg bg-white items-center 
-        justify-center flex font-bold shadow-md">
-            <p className=''>SOCIOROOM</p>
-        </NavLink>
-        <nav className='flex text-lg gap-7 font-medium' >
-            <NavLink to="/Login" className={({ isActive }) => isActive ? 
-            'text-blue-500' : 'text-black'}>
-                Login
-            </NavLink>
-            <NavLink to="/Signup" className={({ isActive }) => isActive ? 
-            'text-blue-500' : 'text-black'}>
-                Signup
-            </NavLink>
-        </nav>
-   </header>
-          } */}
+    <div className='relative'>
+
 
 
  {/* logged in navbar */}
@@ -213,8 +151,8 @@ if(!authUser){
      horizontal: "right",
    }}
  > 
-   <MenuItem>Profile</MenuItem>
-   <MenuItem>My account</MenuItem>
+  <Link to={"/myprofile"}> <MenuItem>Profile</MenuItem></Link>
+   
    <MenuItem onClick={logout}>Logout</MenuItem>
 </Menu>
 </AppBar>

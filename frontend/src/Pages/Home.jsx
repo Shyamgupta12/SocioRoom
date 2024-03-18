@@ -19,7 +19,7 @@ const Home = () => {
     const audioRef = useRef(new Audio(sakura));
     audioRef.current.volume = 0.4;
     audioRef.current.loop = true;
-    const [isRotating,setIsRotating] = useState(false) ;
+    const [isRotating,setIsRotating] = useState(true) ;
     const [currentStage , setCurrentStage] = useState(1);
     const [ isPlayingMusic,setIsPlayingMusic] = useState(false);
     

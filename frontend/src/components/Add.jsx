@@ -74,7 +74,7 @@ const Add = ({ onPostAdded }) => {
 
 useEffect(() => {
   // saving post to mongodb
-  if (url) {
+  if (url !== "") {
     // const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, '$1');
     // console.log(token)
     fetch("/api/v1/posts", {
@@ -146,85 +146,10 @@ const loadfile = (event) => {
 
 
  
-  // const handlePost = () => {
-    
-  //   const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, '$1');
 
-  //   const formdata = new FormData();
-  //   formdata.append('file',file);
-  //   formdata.append('content', postContent);
-  
-  //   axios.post('http://localhost:3000/upload',formdata, {
-  //     headers: {
-  //       'Authorisation': `Bearer ${token}`, // Replace yourToken with the actual token value
-  //     }
-  //   })
-  //   .then(res => {
-  //     setImage(res.data.image);
-  //    onPostAdded({ content: postContent, image: res.data.image }); // Notify parent about the new post
-  //    console.log(res.data.image); 
-  //    setOpen(false)
-  //     toast.success("post added ")
-  //   })
-  //   .catch(err => {
-  //     console.log(err);
-  //     toast.error("post not posted")
-  //   })
-  // }
-   
-  // useEffect(()=>{
-  //   axios.get('http://localhost:3000/getImage')
-  //   .then(res => {
-  //     setImage(res.data[0].image)
-
-  //   // console.log("hello")
-  //   //   console.log(res.data[0].image)
-  //   })
-   
-  //   .catch(err => console.log(err))
-  // },[])
 
 
   
-  // const [userId, setUserId] = useState(null);
-
-  // useEffect(() => {
-  //   // Retrieve userId from cookies or wherever it's stored
-  //   const userIdFromCookie = document.cookie.split('; ').find(row => row.startsWith('userId'));
-  //   if (userIdFromCookie) {
-  //     const userId = userIdFromCookie.split('=')[1];
-  //     setUserId(userId);
-  //   } else {
-  //     console.error("User ID cookie not found");
-  //   }
-  // }, []); // Empty dependency array to run effect only once when component mounts
-    
-  // const handlePost = async () => {
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("image", image);
-  //     formData.append("content", postContent);
-
-  //     // Send the formData to your backend using Axios or fetch
-  //     const response = await fetch("/api/v1/posts", {
-  //       method: "POST",
-  //       headers: {
-  //         "Authorization": `Bearer ${userId}`, // Use userId here
-  //       },
-  //       body: formData,
-  //     });
-
-  //     // Check response status and handle accordingly
-  //     if (response.ok) {
-  //       console.log("Post created successfully!");
-  //     } else {
-  //       console.error("Failed to create post");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error creating post:", error);
-  //   }
-  // };
-
   
 
   return (

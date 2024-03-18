@@ -1,7 +1,23 @@
 const Post = require("../models/posts");
 
 exports.Post = async (req, res) => {
-    const newPost = new Post(req.body);
+    // Ensure req.user exists and contains _id
+    if (!req.user || !req.user._id) {
+        return res.status(400).json({
+            success: false,
+            message: "User information missing or invalid."
+        });
+    }
+
+    const userId = req.user._id;
+    const newPostData = {
+        ...req.body,
+        userId: userId // Ensure userId is provided
+    };
+
+    const newPost = new Post(newPostData);
+    console.log(newPost);
+    
     try {
         const savedPost = await newPost.save();
         return res.status(200).json({
@@ -9,8 +25,9 @@ exports.Post = async (req, res) => {
             savedPost,
             message: "Post Uploaded"
         });
-    }
-    catch (error) {
+    } catch (error) {
+        console.log("Failed to save post:");
+        console.log(error);
         return res.status(400).json({
             success: false,
             message: "Failed to Create Post. Please try again after some time."
