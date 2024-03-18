@@ -42,38 +42,39 @@ server.listen(port, () => {
 
 
 // changes start------ 
-const mongoose = require('mongoose')
-const multer = require('multer')
-const path = require('path')
-const UserModel = require('./models/posts')
-app.use(express.static('public'));
 
-const storage = multer.diskStorage({
-    destination:(req,file,cb)=> {
-        cb(null,'public/Images')
-    },
-    filename : (req , file ,cb) => {
-        cb(null,file.fieldname + "_" + Date.now() + path.extname(file.originalname))
-    }
-})
+// const mongoose = require('mongoose')
+// const multer = require('multer')
+// const path = require('path')
+// const UserModel = require('./models/posts')
+// app.use(express.static('public'));
 
-const upload = multer({
-    storage:storage
-})
+// const storage = multer.diskStorage({
+//     destination:(req,file,cb)=> {
+//         cb(null,'public/Images')
+//     },
+//     filename : (req , file ,cb) => {
+//         cb(null,file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+//     }
+// })
 
-app.post('/upload', auth, upload.single('file'),(req,res)=>{
-    // console.log("post send");
-    console.log(req)
-    UserModel.create({ userId: req.user._id, caption: req.body.content, image: req.file.filename })
-        .then(result => res.json(result))
-        .catch(err => res.status(500).json({ error: err.message }));
-})
+// const upload = multer({
+//     storage:storage
+// })
 
-app.get('/getImage', (req, res) => {
-    UserModel.find()
-        .then(users => res.json(users))
-        .catch(err => res.status(500).json({ error: err.message }));
-});
+// app.post('/upload', auth, upload.single('file'),(req,res)=>{
+//     // console.log("post send");
+//     console.log(req)
+//     UserModel.create({ userId: req.user._id, caption: req.body.content, image: req.file.filename })
+//         .then(result => res.json(result))
+//         .catch(err => res.status(500).json({ error: err.message }));
+// })
+
+// app.get('/getImage', (req, res) => {
+//     UserModel.find()
+//         .then(users => res.json(users))
+//         .catch(err => res.status(500).json({ error: err.message }));
+// });
  
 // changes over---------
 

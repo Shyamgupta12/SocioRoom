@@ -17,6 +17,7 @@ import Search from './components/Search';
 import MyPosts from  './Pages/MyPosts'
 import './index.css';
 import { useAuthContext } from './context/AuthContext';
+import UserProfile from "./Pages/UserProfile";
 
 
 export default function App() {
@@ -93,13 +94,17 @@ const { authUser } = useAuthContext();
             path="/messages"  
             element={<Chat element={authUser ? <Navigate to='/' />: <Login />} setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
-            <Route
+            <Route exact
             path="/myprofile"  
             element={<MyProfile setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
            <Route
             path="/home"  
             element={<LoggedHome setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
+          />
+          <Route
+            path="/profile/:userid"  
+            element={<UserProfile setIsLoggedIn={setIsLoggedIn} user={user} setUser={setUser}/>}
           />
           
 

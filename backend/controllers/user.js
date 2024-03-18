@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const OTP = require("../models/otp");
 const otpGenerator = require("otp-generator");
 const mailSender = require("../utils/mailSender");
+const Post = require("../models/posts");
 // const generateTokenAndSetCookie = require("../utils/generatetoken");
 
 require("dotenv").config();
@@ -368,3 +369,41 @@ exports.user = async (req, res) => {
     }
 };
 
+exports.getprofile = async (req,res) => {
+    User.findOne({ _id: req.params.id })
+    .select("-password")
+    .then(user => {
+        Post.find({ userId: req.params.id })
+            .populate("userId", "_id")
+            .exec((err, post) => {
+                if (err) {
+                    return res.status(422).json({ error: err })
+                }
+                res.status(200).json({ user, post })
+            })
+    }).catch(err => {
+        return res.status(404).json({ error: "User not found" })
+    })
+};
+
+exports.getid = async (req,res) => {
+    try {
+        // Extract the username from the request parameters
+        const username  = req.params.id;
+
+        // Query the database to find the user by username
+        const user = await User.findOne({ username });
+
+        // If user not found, return 404 error
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // If user found, return the user ID
+        return res.status(200).json({ userId: user._id });
+    } catch (error) {
+        // If an error occurs, return a 500 error
+        console.error('Error retrieving user ID by username:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}

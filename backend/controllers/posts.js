@@ -18,6 +18,23 @@ exports.Post = async (req, res) => {
     }
 }
 
+// router.post("/createPost", requireLogin, (req, res) => {
+//     const { body, pic } = req.body;
+//     console.log(pic)
+//     if (!body || !pic) {
+//         return res.status(422).json({ error: "Please add all the fields" })
+//     }
+//     console.log(req.user)
+//     const post = new POST({
+//         body,     
+//         photo: pic,
+//         postedBy: req.user
+//     })
+//     post.save().then((result) => {
+//         return res.json({ post: result })
+//     }).catch(err => console.log(err))
+// })
+
 exports.updatePost = async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
@@ -69,12 +86,14 @@ exports.getuserpost = async (req,res) => {
         const userPosts = await Post.find({ userId: currentUser._id });
 
         res.status(200).json(userPosts);
+        console.log(userPosts);
   } 
     catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
     }
 }
+
 exports.feed = async (req, res) => {
     try {
         const userid = req.user.id;
@@ -90,4 +109,3 @@ exports.feed = async (req, res) => {
         res.status(500).json({error:"Internal Server Error"});
     }
 }
-
