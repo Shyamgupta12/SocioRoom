@@ -66,10 +66,78 @@ const Navbar = ({ setUser, user, setFlag, flag, isLoggedIn, setIsLoggedIn }) => 
     check();
   }, [user?._id, flag]);
 
+    // Check if authUser exists before accessing its properties
+    if (!authUser) {
+        return null; // or return a loading indicator or redirect to login
+    }
 
-if(!authUser) return null;
+//   const fetchData = (value) => {
+//     fetch("http://localhost:3000/api/v1/getusernames")
+//       .then((response) => response.json())
+//       .then((json) => {
+//           if (Array.isArray(json)) {
+//               const results = json.filter((user) => {
+//                   return value && user && user.usernames && user.usernames.toLowerCase().includes(value);
+//               });
+//               console.log(results);
+//           } else {
+//               console.error("JSON response is not an array.");
+//           }
+//       })
+//       .catch((error) => {
+//           console.error("Error fetching data:", error);
+//       });
+// }
 
 
+
+
+  // const handleChange = (value) => {
+  //   setInput(value);
+  //   fetchData(value);
+  // }
+
+
+//   const Logout = async () => {
+//     try {
+//           const getCookie = (name) => {
+//             const value = `; ${document.cookie}`;
+//             const parts = value.split(`; ${name}=`);
+//             if (parts.length === 2) return parts.pop().split(';').shift();
+//           }
+        
+//         const token = getCookie('token');
+
+//         const response = await fetch("http://localhost:3000/api/v1/logout", {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorisation': `Bearer ${token}`,
+//             },
+//         });
+
+//         console.log(response);
+
+//         if (response.ok) {
+//             // Clear token from local storage
+//             // document.cookie=null;
+//             document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+//             console.log(document.cookie)
+//             // Update login state
+//             setIsLoggedIn(false);
+//             // Notify the user
+//             toast.success('Logout successful');
+           
+//            navigate("/") // Redirect to the "/" after successful login
+//         } else {
+//             // If response is not ok, throw an error
+//             throw new Error('Logout failed');
+//         }
+//     } catch (error) {
+//         console.error('Logout error:', error);
+//         toast.error('Logout failed');
+//     }
+// };
 
 
   return (
@@ -86,7 +154,7 @@ if(!authUser) return null;
   <ConnectWithoutContactIcon   sx={{ display: { xs: "block", sm: "none" } }} />
   <Searchbar />
  <Icons>
-       <Badge badgeContent={4} color="error">
+       <Badge badgeContent={authUser.data.loginUser.followings.length} color="error">
       <NavLink to={"/messages"}> <Mail /></NavLink>
      </Badge>
      <Badge badgeContent={2} color="error">

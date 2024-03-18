@@ -69,12 +69,14 @@ exports.getuserpost = async (req,res) => {
         const userPosts = await Post.find({ userId: currentUser._id });
 
         res.status(200).json(userPosts);
+        console.log(userPosts);
   } 
     catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
     }
 }
+
 exports.feed = async (req, res) => {
     try {
         const userid = req.user.id;
@@ -90,4 +92,3 @@ exports.feed = async (req, res) => {
         res.status(500).json({error:"Internal Server Error"});
     }
 }
-
